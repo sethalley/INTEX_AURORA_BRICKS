@@ -1,14 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Miscrosoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace INTEX_AURORA_BRICKS.Models
 {
-    public class AuroraContext : DbContext
+    public class AuroraContext : IdentityDbContext
     {
         public AuroraContext(DbContextOptions<AuroraContext> options) : base(options)
         {
         }
 
         public DbSet<Products> Products { get; set; }
+
+
     }
 
     //public class OrderContext : DbContext
