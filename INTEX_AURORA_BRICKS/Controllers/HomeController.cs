@@ -1,5 +1,6 @@
 using INTEX_AURORA_BRICKS.Models;
 using INTEX_AURORA_BRICKS.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -14,15 +15,19 @@ namespace INTEX_II.Controllers
             _logger = logger;
         }
 
+
         public IActionResult Index()
         {
             return View();
         }
 
+
         public IActionResult About()
         {
             return View();
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Cart()
         {
             return View();

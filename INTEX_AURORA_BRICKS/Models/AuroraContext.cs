@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace INTEX_AURORA_BRICKS.Models
 {
-    public class ProductContext : DbContext
+    public class AuroraContext : IdentityDbContext
     {
-        public ProductContext(DbContextOptions<ProductContext> options) : base(options)
+        public AuroraContext(DbContextOptions<AuroraContext> options) : base(options)
         {
         }
 
