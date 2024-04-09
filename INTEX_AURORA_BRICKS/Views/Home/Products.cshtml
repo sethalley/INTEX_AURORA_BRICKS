@@ -16,47 +16,39 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="search-box">
-                    <form id="subscribe" action="" method="get">
+                    <form id="filterForm" action="" method="get">
                         <div class="row">
-                            <div class="col-lg-5">
-                                <div class="search-heading">
-                                    <h4>Sort Products By:</h4>
-                                </div>
+                            <div class="col-lg-3">
+                                <select name="category">
+                                    <option value="">All Categories</option>
+                                    @foreach (var category in ViewBag.Categories)
+                                    {
+                                        <option value="@category">@category</option>
+                                    }
+                                </select>
                             </div>
-                            <div class="col-lg-7">
-                                <div class="row">
-                                    <div class="col-lg-3">
-                                        <select value="month">
-                                            <option value="month">Pieces</option>
-                                            <option name="June" id="June">June</option>
-                                            <option name="July" id="July">July</option>
-                                            <option name="August" id="August">August</option>
-                                            <option name="September" id="September">September</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <select value="location">
-                                            <option value="location">Color</option>
-                                            <option name="Brazil" id="Brazil">Brazil</option>
-                                            <option name="Europe" id="Europe">Europe</option>
-                                            <option name="US" id="US">US</option>
-                                            <option name="Asia" id="Asia">Asia</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <select value="month">
-                                            <option value="month">Price</option>
-                                            <option name="min" id="min">$0 - $50</option>
-                                            <option name="standard" id="standard">$50 - $100</option>
-                                            <option name="hight" id="hight">$100 - $200</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <fieldset>
-                                            <button type="submit" id="form-submit" class="main-dark-button">Submit</button>
-                                        </fieldset>
-                                    </div>
-                                </div>
+                            <div class="col-lg-3">
+                                <select name="color">
+                                    <option value="">All Colors</option>
+                                    @foreach (var color in ViewBag.Colors)
+                                    {
+                                        <option value="@color">@color</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <select name="price">
+                                    <option value="">All Prices</option>
+                                    <option value="min">$0 - $50</option>
+                                    <option value="standard">$50 - $100</option>
+                                    <option value="high">$100 - $200</option>
+                                    <option value="reallyHigh">$200 - $300</option>
+                                    <option value="megaHigh">$300+</option>
+                                    <!-- Add more price ranges as needed -->
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <button type="submit" class="main-dark-button">Apply Filters</button>
                             </div>
                         </div>
                     </form>

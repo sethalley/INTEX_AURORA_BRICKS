@@ -33,19 +33,63 @@ namespace INTEX_II.Controllers
             return View();
         }
 
-        public IActionResult Products(int page = 1, int pageSize = 10)
+        public IActionResult Products(string category = null, string color = null, string price = null, int page = 1, int pageSize = 10)
         {
-            // Calculate the total number of products
-            var totalProducts = _auroraContext.Products.Count();
+            // Fetch distinct categories and colors from your database
+            ViewBag.Categories = _auroraContext.Products.Select(p => p.category).Distinct().ToList();
+            ViewBag.Colors = _auroraContext.Products.Select(p => p.primary_color).Distinct().ToList();
+
+            IQueryable<Products> productsQuery = _auroraContext.Products;
+
+            // Filter by category
+            if (!string.IsNullOrEmpty(category))
+            {
+                productsQuery = productsQuery.Where(p => p.category == category);
+            }
+
+            // Filter by color
+            if (!string.IsNullOrEmpty(color))
+            {
+                productsQuery = productsQuery.Where(p => p.primary_color == color);
+            }
+
+            // Filter by price
+            if (!string.IsNullOrEmpty(price))
+            {
+                if (price == "min")
+                {
+                    productsQuery = productsQuery.Where(p => p.price >= 0 && p.price <= 50);
+                }
+                else if (price == "standard")
+                {
+                    productsQuery = productsQuery.Where(p => p.price > 50 && p.price <= 100);
+                }
+                else if (price == "high")
+                {
+                    productsQuery = productsQuery.Where(p => p.price > 100 && p.price <= 200);
+                }
+                else if (price == "reallyHigh")
+                {
+                    productsQuery = productsQuery.Where(p => p.price > 200 && p.price <= 300);
+                }
+                else if (price == "megaHigh")
+                {
+                    productsQuery = productsQuery.Where(p => p.price > 300);
+                }
+                // Add more conditions as needed
+            }
+
+            // Calculate total number of pages
+            var totalProducts = productsQuery.Count();
             var totalPages = (int)Math.Ceiling(totalProducts / (double)pageSize);
 
             // Ensure the page number is within the valid range
-            page = Math.Max(page, 1); // Ensure page is at least 1
-            page = Math.Min(page, totalPages); // Ensure page does not exceed totalPages
+            page = Math.Max(page, 1);
+            page = Math.Min(page, totalPages);
 
-            // Retrieve the products for the specific page
-            var products = _auroraContext.Products
-                                .OrderBy(p => p.product_ID)
+            // Retrieve products for the specific page
+            var products = productsQuery
+                                .OrderBy(p => p.product_ID) // Replace Product_ID with your actual primary key or sorting preference
                                 .Skip((page - 1) * pageSize)
                                 .Take(pageSize)
                                 .ToList();
