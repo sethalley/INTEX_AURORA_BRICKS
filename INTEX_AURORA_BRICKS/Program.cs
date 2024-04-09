@@ -3,6 +3,8 @@ using INTEX_AURORA_BRICKS.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.AspNetCore.Authentication.Google;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
