@@ -4,13 +4,8 @@
 
 <!-- ***** Main Banner Area Start ***** -->
 <div class="main-banner">
-    <div class="counter-content">
-        <ul>
-            <li>Days<span id="days"></span></li>
-            <li>Hours<span id="hours"></span></li>
-            <li>Minutes<span id="minutes"></span></li>
-            <li>Seconds<span id="seconds"></span></li>
-        </ul>
+    <div class="counter-content" style="font-size: 30px; color: #444; height: 75px;" onclick="redirectToProductsPage()">
+        Daily Deal: <span id="countdown" style="font-size: 24px; color: #444; cursor:pointer;"></span>
     </div>
     <div class="container">
         <div class="row">
@@ -18,18 +13,62 @@
                 <div class="main-content">
                     <div class="next-show">
                         <i class="fa fa-arrow-up"></i>
-                        <span>Next Show</span>
+                        <span>Limited Time Offer</span>
                     </div>
-                    <h6>Opening on Thursday, March 31st</h6>
-                    <h2>The Sunny Hill Festival 2022</h2>
+                    <h6>Presenting</h6>
+                    <h2>Aurora Brickwell Creations</h2>
                     <div class="main-white-button">
-                        <a href="ticket-details.html">Purchase Tickets</a>
+                        <a href="#">Browse Now</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    // Function to update the countdown
+    function updateCountdown() {
+        // Set the end time 2 hours from now
+        var endTime = new Date();
+        endTime.setHours(endTime.getHours() + 2);
+
+        var countdownElement = document.getElementById('countdown');
+
+        // Update the countdown every second
+        var countdownInterval = setInterval(function () {
+            var now = new Date();
+            var timeDifference = endTime - now;
+
+            // If the countdown is over, display 00:00:00 and clear the interval
+            if (timeDifference <= 0) {
+                countdownElement.textContent = '00:00:00';
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            // Calculate hours, minutes, and seconds
+            var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            // Format the countdown string as HH:MM:SS
+            var countdownString = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+
+            // Update the countdown element
+            countdownElement.textContent = countdownString;
+        }, 1000); // Update every second
+    }
+
+    // Call the function when the page loads
+    window.onload = function () {
+        updateCountdown();
+    };
+
+    // Function to redirect to the products page
+    function redirectToProductsPage() {
+        window.location.href = '@Url.Action("Products", "Home")';
+    }
+</script>
 <!-- ***** Main Banner Area End ***** -->
 <!-- *** Owl Carousel Items ***-->
 <div class="show-events-carousel">
@@ -38,29 +77,30 @@
             <div class="col-lg-12">
                 <div class="owl-show-events owl-carousel">
                     <div class="item">
-                        <a href="event-details.html"><img src="assets/images/show-events-01.jpg" alt=""></a>
+                        <a href="event-details.html"><img src="assets/images/show-events-01.jpg" alt="" style="height: 200px;"></a>
                     </div>
                     <div class="item">
-                        <a href="event-details.html"><img src="assets/images/show-events-02.jpg" alt=""></a>
+                        <a href="event-details.html"><img src="assets/images/show-events-02.jpg" alt="" style="height: 200px;"></a>
                     </div>
                     <div class="item">
-                        <a href="event-details.html"><img src="assets/images/show-events-03.jpg" alt=""></a>
+                        <a href="event-details.html"><img src="assets/images/show-events-03.jpg" alt="" style="height: 200px;"></a>
                     </div>
                     <div class="item">
-                        <a href="event-details.html"><img src="assets/images/show-events-04.jpg" alt=""></a>
+                        <a href="event-details.html"><img src="assets/images/show-events-04.jpg" alt="" style="height: 200px;"></a>
                     </div>
                     <div class="item">
-                        <a href="event-details.html"><img src="assets/images/show-events-01.jpg" alt=""></a>
+                        <a href="event-details.html"><img src="assets/images/show-events-01.jpg" alt="" style="height: 200px;"></a>
                     </div>
                     <div class="item">
-                        <a href="event-details.html"><img src="assets/images/show-events-02.jpg" alt=""></a>
+                        <a href="event-details.html"><img src="assets/images/show-events-02.jpg" alt="" style="height: 200px;"></a>
                     </div>
                     <div class="item">
-                        <a href="event-details.html"><img src="assets/images/show-events-03.jpg" alt=""></a>
+                        <a href="event-details.html"><img src="assets/images/show-events-03.jpg" alt="" style="height: 200px;"></a>
                     </div>
                     <div class="item">
-                        <a href="event-details.html"><img src="assets/images/show-events-04.jpg" alt=""></a>
+                        <a href="event-details.html"><img src="assets/images/show-events-04.jpg" alt="" style="height: 200px;"></a>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -74,23 +114,21 @@
         <div class="row">
             <div class="col-lg-9">
                 <div class="left-content">
-                    <h4>Three Amazing Venues for events</h4>
+                    <h4>Discover the Magic of Lego™ with Aurora</h4>
                     <p>
-                        ArtXibition Event Template is brought to you by Tooplate website and it included total 7 HTML pages.
-                        These are <a href="index.html">Homepage</a>, <a href="about.html">About</a>,
-                        <a href="rent-venue.html">Rent a venue</a>, <a href="shows-events.html">shows &amp; events</a>,
-                        <a href="event-details.html">event details</a>, <a href="tickets.html">tickets</a>, and <a href="ticket-details.html">ticket details</a>.
-                        You can feel free to modify any page as you like. If you have any question, please visit our <a href="https://www.tooplate.com/contact" target="_blank">Contact page</a>.
+                        Aurora Brickwell is thrilled to open the doors of her virtual storefront and share her passion for Lego™ with the world. Each design is a labor of love, crafted with meticulous attention to detail and a boundless imagination. With her web app-based platform, Aurora invites you to experience the joy and wonder of her creations firsthand. Get ready to be inspired, delighted, and captivated by the magic of Lego™ as you explore Aurora's unique designs. Join her on this exciting adventure and let your imagination soar.
+                    </p>
+                    <br />
+                    <p>
+                        You can experience the imagination and creativity with Aurora Brickwell's curated collection of Lego™ sets and exclusive designs. From beloved classics to awe-inspiring creations, each product tells a story and invites you to be a part of the adventure. Whether you're a seasoned collector or a budding enthusiast, there's something for everyone in Aurora's virtual storefront. Explore, shop, and embark on your own Lego™ journey today.
                     </p>
                     <br>
-                    <p>You can use this event template for your commercial or business website. You are not permitted to redistribute this template ZIP file on any template download website. If you need the latest HTML templates, you may visit <a href="https://www.toocss.com/" target="_blank">Too CSS</a> website that features a great collection of templates in different categories.</p>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="right-content">
-                    <h5><i class="fa fa-map-marker"></i> Visit Us</h5>
-                    <span>5 College St NW, <br>Norcross, GA 30071<br>United States</span>
-                    <div class="text-button"><a href="show-events-details.html">Need Directions? <i class="fa fa-arrow-right"></i></a></div>
+                    <h5><i class="fa fa-map-marker"></i> Free Shipping</h5>
+                    <span>As a registered user <br>you show your support,<br>and you enjoy free shipping on your first order from Auroroa!</span>
                 </div>
             </div>
         </div>
@@ -100,17 +138,79 @@
 
 <!-- *** Map ***-->
 <div class="map-image">
-    <img src="assets/images/map-image.jpg" alt="Maps of 3 Venues">
+    <img src="assets/images/about-map-image.jpg" alt="Maps of 3 Venues">
+</div>
+
+<!-- *** User Recommendations *** -->
+<div class="also-like">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>You Might Enjoy...</h2>
+            </div>
+            <div class="col-lg-4">
+                <div class="like-item">
+                    <div class="thumb">
+                        <a href="event-details.html"><img src="assets/images/like-01.jpg" alt=""></a>
+                        <div class="icons">
+                            <ul>
+                                <li><a href="event-details.html"><i class="fa fa-arrow-right"></i></a></li>
+                                <li><a href="ticket-details.html"><i class="fa fa-ticket"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="down-content">
+                        <span>Sept 10 to 14, 2021</span>
+                        <a href="event-details.html"><h4>Wonder Land Music and Arts Festival</h4></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="like-item">
+                    <div class="thumb">
+                        <a href="event-details.html"><img src="assets/images/like-02.jpg" alt=""></a>
+                        <div class="icons">
+                            <ul>
+                                <li><a href="event-details.html"><i class="fa fa-arrow-right"></i></a></li>
+                                <li><a href="ticket-details.html"><i class="fa fa-ticket"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="down-content">
+                        <span>Oct 11 to 16, 2021</span>
+                        <a href="event-details.html"><h4>Big Water Splashing Festival</h4></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="like-item">
+                    <div class="thumb">
+                        <a href="event-details.html"><img src="assets/images/like-03.jpg" alt=""></a>
+                        <div class="icons">
+                            <ul>
+                                <li><a href="event-details.html"><i class="fa fa-arrow-right"></i></a></li>
+                                <li><a href="ticket-details.html"><i class="fa fa-ticket"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="down-content">
+                        <span>Nov 10 to 18, 2021</span>
+                        <a href="event-details.html"><h4>Tiger Dance Hip Hop Festival</h4></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
-<!-- *** Venues & Tickets ***-->
+<!-- *** Featured Lego Sets ***-->
 <div class="venue-tickets">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-heading">
-                    <h2>Our Venues & Tickets</h2>
+                    <h2>Featured Lego Sets</h2>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -193,57 +293,3 @@
 </div>
 
 
-<!-- *** Coming Events ***-->
-<div class="coming-events">
-    <div class="left-button">
-        <div class="main-white-button">
-            <a href="shows-events.html">Discover More</a>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="event-item">
-                    <div class="thumb">
-                        <a href="event-details.html"><img src="assets/images/event-01.jpg" alt=""></a>
-                    </div>
-                    <div class="down-content">
-                        <a href="event-details.html"><h4>Radio City Musical Hall</h4></a>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Tuesday: 15:30-19:30</li>
-                            <li><i class="fa fa-map-marker"></i> Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="event-item">
-                    <div class="thumb">
-                        <a href="event-details.html"><img src="assets/images/event-02.jpg" alt=""></a>
-                    </div>
-                    <div class="down-content">
-                        <a href="event-details.html"><h4>Madison Square Garden</h4></a>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Wednesday: 08:00-14:00</li>
-                            <li><i class="fa fa-map-marker"></i> Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="event-item">
-                    <div class="thumb">
-                        <a href="event-details.html"><img src="assets/images/event-03.jpg" alt=""></a>
-                    </div>
-                    <div class="down-content">
-                        <a href="event-details.html"><h4>Royce Hall</h4></a>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Thursday: 09:00-23:00</li>
-                            <li><i class="fa fa-map-marker"></i> Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

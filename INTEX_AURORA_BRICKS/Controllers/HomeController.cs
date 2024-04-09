@@ -23,11 +23,22 @@ namespace INTEX_II.Controllers
         {
             return View();
         }
-        public IActionResult ONNX()
+        public IActionResult Cart()
         {
             return View();
         }
-
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+        public IActionResult Products()
+        {
+            return View();
+        }
+        public IActionResult Details()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
