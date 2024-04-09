@@ -42,13 +42,14 @@
                 <div class="col-12">
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">INT<em>EX</em></a>
+                        <a href="@Url.Action("Index", "Home")" class="logo" style="color:#FFE338;">Aurora<em style="color:red;">Brix</em></a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li><a href="@Url.Action("Index", "Home")" ">Home</a></li>
-                            <li><a href="@Url.Action("About", "Home")">About Us</a></li>
-                            <li><a href="@Url.Action("ONNX", "Home")">ONNX</a></li>
+                            <li><a href="@Url.Action("About", "Home")">About</a></li>
+                            <li><a href="@Url.Action("Products", "Home")">Products</a></li>
+                            <li><a href="@Url.Action("Cart", "Home")">Cart</a></li>
+                            <li><a href="@Url.Action("Cart", "Home")">Login</a></li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -72,25 +73,23 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="address">
-                        <h4>Sunny Hill Festival Address</h4>
-                        <span>5 College St NW, <br>Norcross, GA 30071<br>United States</span>
+                        <h4>Ships From</h4>
+                        <span>USA <br>Provo, UT 84602<br>United States</span>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="links">
-                        <h4>Useful Links</h4>
+                        <h4>Thank you for your Support!</h4>
                         <ul>
-                            <li><a href="#">Info</a></li>
-                            <li><a href="#">Venues</a></li>
-                            <li><a href="#">Guides</a></li>
-                            <li><a href="#">Videos</a></li>
-                            <li><a href="#">Outreach</a></li>
+                            <li>Reach out for connection and promotions!</li>
+                            <li>We love suggestions!</li>
+                            <li>Spread the word!</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="hours">
-                        <h4>Open Hours</h4>
+                        <h4>Shipping Hours</h4>
                         <ul>
                             <li>Mon to Fri: 10:00 AM to 8:00 PM</li>
                             <li>Sat - Sun: 11:00 AM to 4:00 PM</li>
@@ -102,10 +101,10 @@
                     <div class="under-footer">
                         <div class="row">
                             <div class="col-lg-6 col-sm-6">
-                                <p>São Conrado, Rio de Janeiro</p>
+                                <a href="@Url.Action("Privacy", "Home")">Privacy Policy</a>
                             </div>
                             <div class="col-lg-6 col-sm-6">
-                                <p class="copyright">Copyright 2024 INTEX PROJECT
+                                <p class="copyright">Copyright 2024 AuroraBrix
                             </div>
                         </div>
                     </div>
@@ -114,16 +113,15 @@
                     <div class="sub-footer">
                         <div class="row">
                             <div class="col-lg-3">
-                                <div class="logo"><span>INT<em>EX</em></span></div>
+                                <div class="logo"><a href="@Url.Action("Index", "Home")" class="logo" style="color:#FFE338;">Aurora<em style="color:red;">Brix</em></a></div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="menu">
                                     <ul>
-                                        <li><a href="index.html" class="active">Home</a></li>
-                                        <li><a href="about.html">About Us</a></li>
-                                        <li><a href="rent-venue.html">Rent Venue</a></li>
-                                        <li><a href="shows-events.html">Shows & Events</a></li>
-                                        <li><a href="tickets.html">Tickets</a></li>
+                                        <li><a href="@Url.Action("About", "Home")">About</a></li>
+                                        <li><a href="@Url.Action("About", "Home")">Products</a></li>
+                                        <li><a href="@Url.Action("Cart", "Home")">Cart</a></li>
+                                        <li>Login</li>
                                     </ul>
                                 </div>
                             </div>
