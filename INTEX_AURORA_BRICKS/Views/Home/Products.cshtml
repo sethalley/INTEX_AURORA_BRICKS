@@ -1,4 +1,6 @@
-﻿<div class="page-heading-shows-events">
+﻿@model INTEX_AURORA_BRICKS.Models.ProductsViewModel
+
+<div class="page-heading-shows-events">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -12,49 +14,41 @@
 <div class="tickets-page">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12" >
-                <div class="search-box" ">
-                    <form id="subscribe" action="" method="get">
+            <div class="col-lg-12">
+                <div class="search-box">
+                    <form id="filterForm" action="" method="get">
                         <div class="row">
-                            <div class="col-lg-5">
-                                <div class="search-heading">
-                                    <h4>Sort Products By:</h4>
-                                </div>
+                            <div class="col-lg-3">
+                                <select name="category">
+                                    <option value="">All Categories</option>
+                                    @foreach (var category in ViewBag.Categories)
+                                    {
+                                        <option value="@category">@category</option>
+                                    }
+                                </select>
                             </div>
-                            <div class="col-lg-7">
-                                <div class="row">
-                                    <div class="col-lg-3">
-                                        <select value="month">
-                                            <option value="month">Pieces</option>
-                                            <option name="June" id="June">June</option>
-                                            <option name="July" id="July">July</option>
-                                            <option name="August" id="August">August</option>
-                                            <option name="September" id="September">September</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <select value="location">
-                                            <option value="location">Color</option>
-                                            <option name="Brazil" id="Brazil">Brazil</option>
-                                            <option name="Europe" id="Europe">Europe</option>
-                                            <option name="US" id="US">US</option>
-                                            <option name="Asia" id="Asia">Asia</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <select value="month">
-                                            <option value="month">Price</option>
-                                            <option name="min" id="min">$0 - $50</option>
-                                            <option name="standard" id="standard">$50 - $100</option>
-                                            <option name="hight" id="hight">$100 - $200</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <fieldset>
-                                            <button type="submit" id="form-submit" class="main-dark-button">Submit</button>
-                                        </fieldset>
-                                    </div>
-                                </div>
+                            <div class="col-lg-3">
+                                <select name="color">
+                                    <option value="">All Colors</option>
+                                    @foreach (var color in ViewBag.Colors)
+                                    {
+                                        <option value="@color">@color</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <select name="price">
+                                    <option value="">All Prices</option>
+                                    <option value="min">$0 - $50</option>
+                                    <option value="standard">$50 - $100</option>
+                                    <option value="high">$100 - $200</option>
+                                    <option value="reallyHigh">$200 - $300</option>
+                                    <option value="megaHigh">$300+</option>
+                                    <!-- Add more price ranges as needed -->
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <button type="submit" class="main-dark-button">Apply Filters</button>
                             </div>
                         </div>
                     </form>
@@ -65,143 +59,65 @@
                     <h2>Available Sets</h2>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-01.jpg" alt="">
-                        <div class="price">
-                            <span><em>$25.99</em></span>
+            @foreach (var data in Model.Products)
+            {
+                <div class="col-lg-4">
+                    <div class="ticket-item">
+                        <div class="thumb">
+                            <img src="@data.img_link" alt="/assets/images/about-bg.jpg" style="width:300px;">
+                            <div class="price">
+                                <span><em>$@data.price</em></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="down-content">
-                        <span><a href="@Url.Action("Details", "Home")">See Details</a></span>
-                        <h4>Lego Star Wars</h4>
-                        <ul>
-                            <li> Description of Lego set</li>
-                            <li>123 Pieces</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Add To Cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-02.jpg" alt="">
-                        <div class="price">
-                            <span>1 ticket<br>from <em>$45</em></span>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>There Are 200 Tickets Left For This Show</span>
-                        <h4>Golden Festival</h4>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Sunday: 06:00 PM to 09:00 PM</li>
-                            <li><i class="fa fa-map-marker"></i>789 Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Purchase Tickets</a>
+                        <div class="down-content">
+                            <span><a href="@Url.Action("Details", "Home", new { id = data.product_ID })">See Details</a></span>
+                            <h4>@data.name</h4>
+                            <ul>
+
+                                <li>Piece Count: @data.num_parts</li>
+                                <li>Year: @data.year</li>
+                            </ul>
+                            <a href="ticket-details.html"><img src="~/assets/images/cart.jpg" style="width:100px;" /></a>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-03.jpg" alt="">
-                        <div class="price">
-                            <span>1 ticket<br>from <em>$65</em></span>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>There Are 260 Tickets Left For This Show</span>
-                        <h4>Water Splash Festival</h4>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Tuesday: 07:00 PM to 11:00 PM</li>
-                            <li><i class="fa fa-map-marker"></i>456 Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Add To Cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-04.jpg" alt="">
-                        <div class="price">
-                            <span>1 ticket<br>from <em>$20</em></span>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>There Are 340 Tickets Left For This Show</span>
-                        <h4>Tiger Festival</h4>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Thursday: 06:40 PM to 11:40 PM</li>
-                            <li><i class="fa fa-map-marker"></i>123 Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Purchase Tickets</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-05.jpg" alt="">
-                        <div class="price">
-                            <span>1 ticket<br>from <em>$30</em></span>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>There Are 420 Tickets Left For This Show</span>
-                        <h4>Woodland Festival</h4>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Wednesday: 06:00 PM to 09:00 PM</li>
-                            <li><i class="fa fa-map-marker"></i>1122 Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Purchase Tickets</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-06.jpg" alt="">
-                        <div class="price">
-                            <span>1 ticket<br>from <em>$40</em></span>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>There Are 520 Tickets Left For This Show</span>
-                        <h4>Winter Festival</h4>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Saturday: 06:00 PM to 09:00 PM</li>
-                            <li><i class="fa fa-map-marker"></i>220 Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Purchase Tickets</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="pagination">
-                    <ul>
-                        <li><a href="#">Prev</a></li>
-                        <li><a href="#">1</a></li>
-                        <li class="active"><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">Next</a></li>
-                    </ul>
-                </div>
-            </div>
+            }
         </div>
     </div>
+</div>
+
+<br />
+<br />
+<div style="text-align: center;">
+    <div class="pagination" style="display: inline-block;">
+        @if (Model.CurrentPage > 1)
+        {
+            <a href="@Url.Action("Products", "Home", new { page = Model.CurrentPage - 1, pageSize = Model.PageSize })" style="background-color: lightgray; padding: 5px; margin: 5px; border-radius: 5px;">Previous</a>
+        }
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <a href="@Url.Action("Products", "Home", new { page = i, pageSize = Model.PageSize })" style="background-color: @(Model.CurrentPage == i ? "gray" : "lightgray"); color: white; padding: 5px; margin: 5px; border-radius: 5px;">@i</a>
+        }
+
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <a href="@Url.Action("Products", "Home", new { page = Model.CurrentPage + 1, pageSize = Model.PageSize })" style="background-color: lightgray; padding: 5px; margin: 5px; border-radius: 5px;">Next</a>
+        }
+    </div>
+</div>
+
+
+<br />
+<div>
+    @using (Html.BeginForm("Products", "Home", FormMethod.Post))
+    {
+        <label for="pageSize">Items per page:</label>
+        <select id="pageSize" name="pageSize" onchange="this.form.submit();">
+            @foreach (var size in new[] { 5, 10, 20 }) // Define your desired page sizes here
+            {
+                <option value="@size" selected="@(Model.PageSize == size ? "selected" : null)">@size</option>
+            }
+        </select>
+    }
 </div>

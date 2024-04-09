@@ -1,36 +1,39 @@
-﻿<div class="ticket-details-page">
+﻿@model INTEX_AURORA_BRICKS.Models.Products
+
+<div class="ticket-details-page">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
                 <div class="left-image">
-                    <img src="/assets/images/ticket-details.jpg" alt="">
+                    <img src="@Model.img_link" alt="/assets/images/about_bg.jpg" style="width:100%;">
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="right-content">
-                    <h4>Sunny Hill Festival</h4>
-                    <span>240 Tickets still available</span>
+                    <h4>@Model.name</h4>
+                    <span>Piece Count: @Model.num_parts</span>
                     <ul>
-                        <li><i class="fa fa-clock-o"></i> Thursday 18:00 to 22:00</li>
-                        <li><i class="fa fa-map-marker"></i>Copacabana Beach, Rio de Janeiro</li>
+                        <li>@Model.description</li>
                     </ul>
                     <div class="quantity-content">
                         <div class="left-content">
-                            <h6>Standard Ticket</h6>
-                            <p>$65 per ticket</p>
-                        </div>
-                        <div class="right-content">
-                            <div class="quantity buttons_added">
-                                <input type="button" value="-" class="minus"><input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">
-                            </div>
+                            <ul>
+                                <li><strong>Details:</strong></li>
+                                <li><p><strong>Primary Color: </strong> @Model.primary_color</p></li>
+                                <li><p><strong>Secondary Color: </strong> @Model.secondary_color</p></li>
+                                <li><p><strong>Year: </strong>@Model.year</p></li>
+                                <li><p><strong>Category: </strong> @Model.category</p></li>
+                            </ul>
                         </div>
                     </div>
+                    <br />
+                    <br />
                     <div class="total">
-                        <h4>Total: $210.00</h4>
-                        <div class="main-dark-button"><a href="#">Purchase Tickets</a></div>
+                        <h4>Total: $@Model.price</h4>
+                        <div><img src="~/assets/images/cart.jpg" /></div>
                     </div>
                     <div class="warn">
-                        <p>*You Can Only Buy 10 Tickets For This Show</p>
+                        <p></p>
                     </div>
                 </div>
             </div>

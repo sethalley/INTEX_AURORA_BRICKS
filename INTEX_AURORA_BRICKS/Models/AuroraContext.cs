@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Miscrosoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace INTEX_AURORA_BRICKS.Models
@@ -9,7 +9,9 @@ namespace INTEX_AURORA_BRICKS.Models
         {
         }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Products> Products { get; set; }
+
+
     }
 
     //public class OrderContext : DbContext
