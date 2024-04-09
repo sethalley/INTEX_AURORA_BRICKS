@@ -33,11 +33,41 @@ namespace INTEX_II.Controllers
             return View();
         }
 
-        public IActionResult Products()
+        public IActionResult Products(int page = 1, int pageSize = 10)
         {
-            var products = _auroraContext.Products.ToList();
-            return View(products);
+            // Calculate the total number of products
+            var totalProducts = _auroraContext.Products.Count();
+            var totalPages = (int)Math.Ceiling(totalProducts / (double)pageSize);
+
+            // Ensure the page number is within the valid range
+            page = Math.Max(page, 1); // Ensure page is at least 1
+            page = Math.Min(page, totalPages); // Ensure page does not exceed totalPages
+
+            // Retrieve the products for the specific page
+            var products = _auroraContext.Products
+                                .OrderBy(p => p.product_ID)
+                                .Skip((page - 1) * pageSize)
+                                .Take(pageSize)
+                                .ToList();
+
+            var viewModel = new ProductsViewModel
+            {
+                Products = products,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                PageSize = pageSize
+            };
+
+            return View(viewModel);
         }
+
+        [HttpPost] // Handle POST requests for changing items per page
+        public IActionResult Products(int pageSize)
+        {
+            // Redirect back to the Products action with the new pageSize
+            return RedirectToAction("Products", new { pageSize });
+        }
+
 
         public IActionResult Details(byte id)
         {
