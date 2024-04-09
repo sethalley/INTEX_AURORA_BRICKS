@@ -1,5 +1,4 @@
 using INTEX_AURORA_BRICKS.Models;
-using INTEX_AURORA_BRICKS.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,11 +6,11 @@ namespace INTEX_II.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly AuroraContext _auroraContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(AuroraContext auroraContext)
         {
-            _logger = logger;
+            _auroraContext = auroraContext;
         }
 
         public IActionResult Index()
@@ -23,21 +22,31 @@ namespace INTEX_II.Controllers
         {
             return View();
         }
+
         public IActionResult Cart()
         {
             return View();
         }
+
         public IActionResult Privacy()
         {
             return View();
         }
+
         public IActionResult Products()
         {
-            return View();
+            var products = _auroraContext.Products.ToList();
+            return View(products);
         }
-        public IActionResult Details()
+
+        public IActionResult Details(byte id)
         {
-            return View();
+            var product = _auroraContext.Products.FirstOrDefault(p => p.product_ID == id);
+            if (product == null)
+            {
+                return NotFound(); // Handle the case where the product with the specified ID is not found
+            }
+            return View(product);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -1,4 +1,5 @@
-﻿<div class="page-heading-shows-events">
+﻿@model IEnumerable<INTEX_AURORA_BRICKS.Models.Products>
+<div class="page-heading-shows-events">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -13,7 +14,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12" >
-                <div class="search-box" ">
+                <div class="search-box">
                     <form id="subscribe" action="" method="get">
                         <div class="row">
                             <div class="col-lg-5">
@@ -65,27 +66,31 @@
                     <h2>Available Sets</h2>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-01.jpg" alt="">
-                        <div class="price">
-                            <span><em>$25.99</em></span>
+            @foreach (var data in Model)
+            {
+                <div class="col-lg-4">
+                    <div class="ticket-item">
+                        <div class="thumb">
+                            <img src="@data.img_link" alt="/assets/images/about-bg.jpg" style="width:300px;">
+                            <div class="price">
+                                <span><em>$@data.price</em></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="down-content">
-                        <span><a href="@Url.Action("Details", "Home")">See Details</a></span>
-                        <h4>Lego Star Wars</h4>
-                        <ul>
-                            <li> Description of Lego set</li>
-                            <li>123 Pieces</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Add To Cart</a>
+                        <div class="down-content">
+                            <span><a href="@Url.Action("Details", "Home", new { id = data.product_ID })">See Details</a></span>
+                            <h4>@data.name</h4>
+                            <ul>
+                                
+                                <li>Piece Count: @data.num_parts</li>
+                                <li>Year: @data.year</li>
+                            </ul>
+                            <div class="main-dark-button">
+                                <a href="ticket-details.html">Add To Cart</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
             <div class="col-lg-4">
                 <div class="ticket-item">
                     <div class="thumb">
@@ -107,90 +112,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-03.jpg" alt="">
-                        <div class="price">
-                            <span>1 ticket<br>from <em>$65</em></span>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>There Are 260 Tickets Left For This Show</span>
-                        <h4>Water Splash Festival</h4>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Tuesday: 07:00 PM to 11:00 PM</li>
-                            <li><i class="fa fa-map-marker"></i>456 Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Add To Cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-04.jpg" alt="">
-                        <div class="price">
-                            <span>1 ticket<br>from <em>$20</em></span>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>There Are 340 Tickets Left For This Show</span>
-                        <h4>Tiger Festival</h4>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Thursday: 06:40 PM to 11:40 PM</li>
-                            <li><i class="fa fa-map-marker"></i>123 Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Purchase Tickets</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-05.jpg" alt="">
-                        <div class="price">
-                            <span>1 ticket<br>from <em>$30</em></span>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>There Are 420 Tickets Left For This Show</span>
-                        <h4>Woodland Festival</h4>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Wednesday: 06:00 PM to 09:00 PM</li>
-                            <li><i class="fa fa-map-marker"></i>1122 Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Purchase Tickets</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="ticket-item">
-                    <div class="thumb">
-                        <img src="/assets/images/ticket-06.jpg" alt="">
-                        <div class="price">
-                            <span>1 ticket<br>from <em>$40</em></span>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>There Are 520 Tickets Left For This Show</span>
-                        <h4>Winter Festival</h4>
-                        <ul>
-                            <li><i class="fa fa-clock-o"></i> Saturday: 06:00 PM to 09:00 PM</li>
-                            <li><i class="fa fa-map-marker"></i>220 Copacabana Beach, Rio de Janeiro</li>
-                        </ul>
-                        <div class="main-dark-button">
-                            <a href="ticket-details.html">Purchase Tickets</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div class="col-lg-12">
                 <div class="pagination">
                     <ul>

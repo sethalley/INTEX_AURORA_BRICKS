@@ -1,12 +1,20 @@
 using INTEX_AURORA_BRICKS.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore.SqlServer;
+using INTEX_AURORA_BRICKS.Models;
+using System.Configuration;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("AuroraConnection");
+builder.Services.AddDbContext<AuroraContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddControllersWithViews();
 //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //    options.UseSqlServer(connectionString));

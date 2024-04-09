@@ -2,28 +2,28 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Product
+    public class Products
     {
         [Key]
-        public int ProductId { get; set; }
+        public byte product_ID { get; set; }
 
-        public string? Name { get; set; }
+        public string? name { get; set; }
 
-        public int? Year { get; set; }
+        public short? year { get; set; }
 
-        public int? NumParts { get; set; }
+        public short? num_parts { get; set; }
 
-        public decimal? Price { get; set; }
+        public short? price { get; set; }
 
-        public string? ImgLink { get; set; }
+        public string? img_link { get; set; }
 
-        public string? PrimaryColor { get; set; }
+        public string? primary_color { get; set; }
 
-        public string? SecondaryColor { get; set; }
+        public string? secondary_color { get; set; }
 
-        public string? Description { get; set; }
+        public string? description { get; set; }
 
-        public string? Category { get; set; }
+        public string? category { get; set; }
     }
 
 }
