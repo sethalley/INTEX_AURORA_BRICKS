@@ -1,4 +1,5 @@
-using Miscrosoft.AspNetCore.Identity.EntityFrameworkCore;
+
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace INTEX_AURORA_BRICKS.Models
@@ -10,6 +11,7 @@ namespace INTEX_AURORA_BRICKS.Models
         }
 
         public DbSet<Products> Products { get; set; }
+        public DbSet<ItemBasedRecommendations> ItemBasedRecommendations { get; set; }
 
 
     }

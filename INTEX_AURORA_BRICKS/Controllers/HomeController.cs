@@ -1,6 +1,7 @@
 using INTEX_AURORA_BRICKS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace INTEX_II.Controllers
@@ -117,19 +118,25 @@ namespace INTEX_II.Controllers
         }
 
 
-        public IActionResult Details(byte id)
+        public async Task<IActionResult> Details(byte id)
         {
-            var product = _auroraContext.Products.FirstOrDefault(p => p.product_ID == id);
+            // Find the product with the specified ID
+            var product = await _auroraContext.Products.FirstOrDefaultAsync(p => p.product_ID == id);
+
+            // If the product is not found, return a not found result
             if (product == null)
             {
-                return NotFound(); // Handle the case where the product with the specified ID is not found
+                return NotFound();
             }
+
+            // Query recommendations based on the current product's ID
+            var recommendations = await _auroraContext.ItemBasedRecommendations
+                .Where(r => r.Product_ID == id)
+                .FirstOrDefaultAsync();
+
+            // Pass both product and recommendations to the view
+            ViewBag.Recommendations = recommendations;
             return View(product);
-        }
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
