@@ -34,7 +34,12 @@
                     <br />
                     <div class="total">
                         <h4>Total: $@Model.price</h4>
-                        <div><img src="~/assets/images/cart.jpg" /></div>
+                        <form method="post" asp-action="AddToCart">
+                            <input type="hidden" name="productId" value="@Model.product_ID" />
+                            <button type="submit" class="image-button">
+                                <img src="~/assets/images/cart.jpg" alt="Add to Cart" style="width:300px;" />
+                            </button>
+                        </form>
                     </div>
                     <div class="warn">
                         <p></p>
@@ -91,7 +96,7 @@
                                                     <div class="down-content">
                                                         <div class="left-content">
                                                             <div class="main-white-button">
-                                                                <a href="#">Details</a>
+                                                                <a href="@Url.Action("Details", "Home", new { id = @recommendedProduct.product_ID })">Details</a>
                                                             </div>
                                                         </div>
                                                         <div class="right-content">
