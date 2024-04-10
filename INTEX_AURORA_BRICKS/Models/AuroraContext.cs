@@ -9,7 +9,10 @@ namespace INTEX_AURORA_BRICKS.Models
         }
 
         public DbSet<Products> Products { get; set; }
+
+        public DbSet<Cart> Cart { get; set; }
     }
+
 
     //public class OrderContext : DbContext
     //{

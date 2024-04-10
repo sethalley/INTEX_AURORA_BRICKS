@@ -24,6 +24,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AuroraConnection"));
 });
 
+// Used for cart sessions
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -46,6 +50,9 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// For cart sessions
+app.UseSession();
 
 app.UseRouting();
 
