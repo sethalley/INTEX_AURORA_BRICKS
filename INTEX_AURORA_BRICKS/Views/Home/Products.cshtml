@@ -1,5 +1,6 @@
 ﻿@model INTEX_AURORA_BRICKS.Models.ProductsViewModel
-
+<br />
+<br />
 <div class="page-heading-shows-events">
     <div class="container">
         <div class="row">
@@ -62,9 +63,13 @@
             @foreach (var data in Model.Products)
             {
                 <div class="col-lg-4">
+                    @if (data.product_ID == 1)
+                    {
+                        <p style="color:red;"><strong>10% Off</strong> - Limited time &darr;</p>
+                    }
                     <div class="ticket-item">
                         <div class="thumb">
-                            <img src="@data.img_link" alt="~/assets/images/about-bg.jpg" style="width:300px;">
+                            <img src="@data.img_link" alt="/assets/images/about-bg.jpg" style="width:100%;">
                             <div class="price">
                                 <span><em>$@data.price</em></span>
                             </div>
