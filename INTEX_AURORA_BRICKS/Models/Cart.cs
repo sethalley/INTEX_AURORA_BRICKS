@@ -31,6 +31,16 @@ namespace INTEX_AURORA_BRICKS.Models
 
         public void RemoveLine(Products p) => Lines.RemoveAll(x => x.Products.product_ID == p.product_ID);
 
+        public void UpdateQuantity(Products product, int quantity)
+        {
+            CartLine line = Lines.FirstOrDefault(x => x.Products.product_ID == product.product_ID);
+
+            if (line != null)
+            {
+                line.Quantity = quantity;
+            }
+        }
+
         public void Clear() => Lines.Clear();
 
         /// CHECK THIS LINE "Products p" may or may not be necessary 

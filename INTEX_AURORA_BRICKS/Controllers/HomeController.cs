@@ -65,6 +65,24 @@ namespace INTEX_II.Controllers
             return RedirectToAction("Cart"); // Redirect to the Cart action
         }
 
+        [HttpPost]
+        public IActionResult UpdateCart(int productId, int quantity)
+        {
+            var product = _auroraContext.Products.FirstOrDefault(p => p.product_ID == productId);
+
+            if (product != null)
+            {
+                var cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
+                cart.UpdateQuantity(product, quantity); // Add a new method UpdateQuantity to Cart class
+                HttpContext.Session.SetJson("cart", cart);
+
+                // Return the updated total to the client
+                return Json(cart.CalculateTotal());
+            }
+
+            return BadRequest("Product not found");
+        }
+
 
         public IActionResult Privacy()
         {
