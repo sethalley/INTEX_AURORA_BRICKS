@@ -1,0 +1,104 @@
+﻿@model List<INTEX_AURORA_BRICKS.Models.Products>
+
+<h1>Product Administration</h1>
+<a href="@Url.Action("CreateProd", "Home")" class="btn btn-primary">Add New Product</a>
+<br />
+<br />
+<table class="table" id="ProdCrud">
+    <thead>
+        <tr>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>Product ID</th>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Category</th>
+            <th>Primary Color</th>
+            <th>Secondary Color</th>
+            <th>Price</th>
+            <th>Piece Count</th>
+            <th>Description</th>
+            <th>Image Link</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("EditProduct", "Home", new { id = product.product_ID })" class="btn btn-primary">Edit</a>
+                </td>
+                <td>
+                    <form asp-action="DeleteProduct" method="post">
+                        <input type="hidden" name="id" value="@product.product_ID" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+                <td>@product.product_ID</td>
+                <td>@product.name</td>
+                <td>@product.year</td>
+                <td>@product.category</td>
+                <td>@product.primary_color</td>
+                <td>@product.secondary_color</td>
+                <td>@product.price</td>
+                <td>@product.num_parts</td>
+                <td>@product.description</td>
+                <td>@product.img_link</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    /* Table styling */
+    #ProdCrud {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    /* Table headers */
+    #ProdCrud th {
+        font-weight: bold;
+        background-color: #f0f0f0; /* Light gray background */
+        border: 1px solid #ccc; /* Border */
+        padding: 8px; /* Padding */
+    }
+
+    /* Table cells */
+    #ProdCrud td {
+        border: 1px solid #ccc; /* Border */
+        padding: 8px; /* Padding */
+        max-width: 200px; /* Adjust max width for cells */
+        overflow: hidden;
+        white-space: nowrap; /* Prevents wrapping */
+        text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
+    }
+
+    /* Alternating row colors */
+    #ProdCrud tbody tr:nth-child(odd) {
+        background-color: rgba(255, 0, 0, 0.1); /* Faded red */
+    }
+
+    #ProdCrud tbody tr:nth-child(even) {
+        background-color: rgba(255, 255, 0, 0.1); /* Faded yellow */
+    }
+
+    /* Set fixed height for table cells */
+    #ProdCrud tbody td {
+        height: 50px; /* Adjust height as needed */
+    }
+
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var descriptions = document.querySelectorAll("#ProdCrud .description");
+        descriptions.forEach(function (desc) {
+            var text = desc.textContent;
+            if (text.length > 50) {
+                desc.textContent = text.slice(0, 50) + "...";
+            }
+        });
+    });
+</script>

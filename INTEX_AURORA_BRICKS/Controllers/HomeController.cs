@@ -126,6 +126,84 @@ namespace INTEX_II.Controllers
             }
             return View(product);
         }
+
+        public IActionResult CrudProductAdmin()
+        {
+            List<Products> products = _auroraContext.Products.ToList(); // Fetch all products from the database and materialize into a list
+            return View(products); // Pass the list of products to the view
+        }
+
+
+        // Action method to display the form for adding a new product
+        public IActionResult CreateProd()
+        {
+            return View();
+        }
+
+        // Action method to handle the POST request for adding a new product
+        [HttpPost]
+        public IActionResult AddProduct(Products product)
+        {
+            if (ModelState.IsValid)
+            {
+                // Query the database to find the highest product ID
+                int highestProductId = _auroraContext.Products.Max(p => p.product_ID);
+
+                // Increment the highest product ID by 1 to generate a new product ID
+                int newProductId = highestProductId + 1;
+
+                // Assign the generated product ID to the new record
+                product.product_ID = (byte)newProductId;
+
+                // Add the new record to the database
+                _auroraContext.Products.Add(product);
+                _auroraContext.SaveChanges();
+                return RedirectToAction("CrudProductAdmin"); // Redirect to the product list page
+            }
+            return View(product);
+        }
+
+        // Action method to display the form for editing a product
+        public IActionResult EditProduct(int id)
+        {
+            // Retrieve the product from the database based on the ID
+            var product = _auroraContext.Products.FirstOrDefault(p => p.product_ID == id);
+
+            if (product == null)
+            {
+                return NotFound(); // Handle case where product is not found
+            }
+
+            return View("CreateProd", product); // Pass the product to the CreateProd.cshtml view
+        }
+
+        [HttpPost]
+        public IActionResult UpdateProduct(Products product)
+        {
+            if (ModelState.IsValid)
+            {
+                _auroraContext.Products.Update(product);
+                _auroraContext.SaveChanges();
+                return RedirectToAction("CrudProductAdmin");
+            }
+            return View("CreateProd", product);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteProduct(byte id)
+        {
+            var product = _auroraContext.Products.Find(id);
+            if (product == null)
+            {
+                return NotFound(); // Or handle the case where the product is not found
+            }
+
+            _auroraContext.Products.Remove(product);
+            _auroraContext.SaveChanges();
+
+            return RedirectToAction("CrudProductAdmin");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

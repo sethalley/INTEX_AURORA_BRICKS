@@ -1,0 +1,90 @@
+﻿@model INTEX_AURORA_BRICKS.Models.Products
+
+<h1>@(Model == null ? "Add New Product" : "Edit Product")</h1>
+
+<form asp-action="@(Model == null ? "AddProduct" : "UpdateProduct")" method="post" id="newLegoForm">
+    <input type="hidden" id="product_ID" name="product_ID" value="@Model.product_ID">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" class="form-control" value="@Model.name" required>
+    </div>
+    <div class="form-group">
+        <label for="year">Year:</label>
+        <input type="text" id="year" name="year" class="form-control" value="@Model.year" required>
+    </div>
+    <div class="form-group">
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" class="form-control" value="@Model.category" required>
+    </div>
+    <div class="form-group">
+        <label for="primary_color">Primary Color:</label>
+        <input type="text" id="primary_color" name="primary_color" class="form-control" value="@Model.primary_color" required>
+    </div>
+    <div class="form-group">
+        <label for="secondary_color">Secondary Color:</label>
+        <input type="text" id="secondary_color" name="secondary_color" class="form-control" value="@Model.secondary_color">
+    </div>
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" class="form-control" value="@Model.price" required>
+    </div>
+    <div class="form-group">
+        <label for="num_parts">Piece Count:</label>
+        <input type="text" id="num_parts" name="num_parts" class="form-control" value="@Model.num_parts">
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" class="form-control" value="@Model.description">
+    </div>
+    <div class="form-group">
+        <label for="img_link">Image Link:</label>
+        <input type="text" id="img_link" name="img_link" class="form-control" value="@Model.img_link">
+    </div>
+    <button type="submit" class="btn btn-primary">@((Model == null ? "Add" : "Update") + " Products")</button>
+</form>
+
+
+<style>
+    /* Form container */
+    #newLegoForm {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    /* Form group */
+    #newLegoForm .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* Label styles */
+    #newLegoForm label {
+        display: block;
+        font-weight: bold;
+    }
+
+    /* Input styles */
+    #newLegoForm .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box; /* Ensure padding is included in width */
+    }
+
+    /* Button styles */
+    #newLegoForm .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    #newLegoForm .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+</style>
