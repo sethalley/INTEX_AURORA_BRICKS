@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model INTEX_AURORA_BRICKS.Models.ProductsViewModel
 <br />
 <br />
 <!-- ***** Main Banner Area Start ***** -->
@@ -142,6 +143,49 @@
     <img src="assets/images/about-map-image.jpg" alt="Maps of 3 Venues">
 </div>
 
+
+<h1>Most popular...</h1>
+<br />
+<div class="container">
+    <!-- Add a new class 'horizontal-scroll' to the row -->
+    <div class="row horizontal-scroll">
+
+        @{
+            List<int> best = new List<int>() { 27, 33, 34, 37 };
+            if (Model != null)
+            {
+                foreach (var product in Model.Products)
+                {
+                    if (best.Contains(product.product_ID))
+                    {
+                        <div class="col-lg-4">
+                            <div class="event-item">
+                                <div class="thumb">
+                                    <a href=" @Url.Action("Details", "Home", new { id = product.product_ID })"><img src="@product.img_link" alt=""></a>
+                                </div>
+                                <div class="down-content">
+                                    <a href="event-details.html"><h4>@product.name</h4></a>
+                                    <ul>
+                                        <li>Piece Count: @product.num_parts</li>
+                                        <li>Color: @product.primary_color</li>
+                                        <li><a href=" @Url.Action("Details", "Home", new { id = product.product_ID })">View Item</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                // Handle scenario where Model is null
+                <p>No products available.</p>
+            }
+        }
+    </div>
+</div>
+
+
 <!-- *** User Recommendations *** -->
 <div class="also-like">
     <div class="container">
@@ -206,3 +250,19 @@
 
 
 
+
+
+
+<style>
+    .horizontal-scroll {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+    }
+
+    .horizontal-scroll .col-lg-4 {
+        flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+    }
+
+</style>

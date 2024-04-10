@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Drawing.Printing;
 
 namespace INTEX_II.Controllers
 {
@@ -19,7 +20,17 @@ namespace INTEX_II.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            IQueryable<Products> productsQuery = _auroraContext.Products;
+
+            //Retrieve products for the specific page
+            var products = productsQuery
+                                .OrderBy(p => p.product_ID) // Replace Product_ID with your actual primary key or sorting preference
+                                .ToList();
+            var viewModel = new ProductsViewModel
+            {
+                Products = products
+            };
+            return View(viewModel);
         }
 
 
