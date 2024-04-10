@@ -1,6 +1,6 @@
-
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace INTEX_AURORA_BRICKS.Models
 {
@@ -13,8 +13,9 @@ namespace INTEX_AURORA_BRICKS.Models
         public DbSet<Products> Products { get; set; }
         public DbSet<ItemBasedRecommendations> ItemBasedRecommendations { get; set; }
 
-
+        public DbSet<Cart> Cart { get; set; }
     }
+
 
     //public class OrderContext : DbContext
     //{

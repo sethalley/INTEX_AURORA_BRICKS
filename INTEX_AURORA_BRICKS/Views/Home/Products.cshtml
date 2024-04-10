@@ -82,7 +82,12 @@
                                 <li>Piece Count: @data.num_parts</li>
                                 <li>Year: @data.year</li>
                             </ul>
-                            <a href="ticket-details.html"><img src="~/assets/images/cart.jpg" style="width:100px;" /></a>
+                            <form method="post" asp-action="AddToCart">
+                                <input type="hidden" name="productId" value="@data.product_ID" />
+                                <button type="submit" class="image-button">
+                                    <img src="~/assets/images/cart.jpg" alt="Add to Cart" style="width:100px;" />
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -126,3 +131,19 @@
         </select>
     }
 </div>
+
+
+<style>
+    .image-button {
+        border: none; /* Remove default button border */
+        background: transparent; /* Set background as transparent */
+        cursor: pointer; /* Show cursor as pointer on hover */
+        padding: 0; /* Remove default padding */
+    }
+
+        .image-button img {
+            width: 100%; /* Ensure the image fills the button */
+            height: auto; /* Maintain aspect ratio */
+        }
+</style>
+
