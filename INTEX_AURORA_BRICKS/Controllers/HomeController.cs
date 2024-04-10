@@ -1,3 +1,4 @@
+using INTEX_AURORA_BRICKS.Infrastructure;
 using INTEX_AURORA_BRICKS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +27,62 @@ namespace INTEX_II.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        //public IActionResult Cart()
+        //{
+        //    var cart = _auroraContext.Cart;
+
+        //    // Assuming _auroraContext.Cart is the Cart model you want to pass to the view
+        //    return View(cart);
+        //}
+
+        //GTP STUFF
+        //public IActionResult Cart()
+        //{
+        //    // Assuming _auroraContext.Cart represents the cart data
+        //    var cart = _auroraContext.Cart.FirstOrDefault(); // You may need to adjust this based on your data structure
+
+        //    return View(cart);
+        //}
+
+        //GEMINI
         public IActionResult Cart()
         {
-            return View();
+            var cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart(); // Create an empty cart
+            return View(cart);
         }
+
+        public IActionResult AddToCart(int productId)
+        {
+            var product = _auroraContext.Products.FirstOrDefault(p => p.product_ID == productId);
+
+            if (product != null)
+            {
+                var cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart(); // You should implement a method to retrieve the cart (e.g., from session or database)
+                cart.AddItem(product, 1); // Add the product to the cart with a quantity of 1
+                HttpContext.Session.SetJson("cart", cart); // You should implement a method to save the cart (e.g., to session or database)
+            }
+
+            return RedirectToAction("Cart"); // Redirect to the Cart action
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCart(int productId, int quantity)
+        {
+            var product = _auroraContext.Products.FirstOrDefault(p => p.product_ID == productId);
+
+            if (product != null)
+            {
+                var cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
+                cart.UpdateQuantity(product, quantity); // Add a new method UpdateQuantity to Cart class
+                HttpContext.Session.SetJson("cart", cart);
+
+                // Return the updated total to the client
+                return Json(cart.CalculateTotal());
+            }
+
+            return BadRequest("Product not found");
+        }
+
 
         public IActionResult Privacy()
         {
@@ -209,5 +261,6 @@ namespace INTEX_II.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }
