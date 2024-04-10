@@ -1,5 +1,6 @@
 ﻿@model INTEX_AURORA_BRICKS.Models.ProductsViewModel
-
+<br />
+<br />
 <div class="page-heading-shows-events">
     <div class="container">
         <div class="row">
@@ -62,9 +63,13 @@
             @foreach (var data in Model.Products)
             {
                 <div class="col-lg-4">
+                    @if (data.product_ID == 1)
+                    {
+                        <p style="color:red;"><strong>10% Off</strong> - Limited time &darr;</p>
+                    }
                     <div class="ticket-item">
                         <div class="thumb">
-                            <img src="@data.img_link" alt="/assets/images/about-bg.jpg" style="width:300px;">
+                            <img src="@data.img_link" alt="/assets/images/about-bg.jpg" style="width:100%;">
                             <div class="price">
                                 <span><em>$@data.price</em></span>
                             </div>
@@ -77,7 +82,12 @@
                                 <li>Piece Count: @data.num_parts</li>
                                 <li>Year: @data.year</li>
                             </ul>
-                            <a href="ticket-details.html"><img src="~/assets/images/cart.jpg" style="width:100px;" /></a>
+                            <form method="post" asp-action="AddToCart">
+                                <input type="hidden" name="productId" value="@data.product_ID" />
+                                <button type="submit" class="image-button">
+                                    <img src="~/assets/images/cart.jpg" alt="Add to Cart" style="width:100px;" />
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -121,3 +131,19 @@
         </select>
     }
 </div>
+
+
+<style>
+    .image-button {
+        border: none; /* Remove default button border */
+        background: transparent; /* Set background as transparent */
+        cursor: pointer; /* Show cursor as pointer on hover */
+        padding: 0; /* Remove default padding */
+    }
+
+        .image-button img {
+            width: 100%; /* Ensure the image fills the button */
+            height: auto; /* Maintain aspect ratio */
+        }
+</style>
+

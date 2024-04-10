@@ -1,7 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
+@model INTEX_AURORA_BRICKS.Models.ProductsViewModel
+<br />
+<br />
 <!-- ***** Main Banner Area Start ***** -->
 <div class="main-banner">
     <div class="counter-content" style="font-size: 30px; color: #444; height: 75px;" onclick="redirectToProductsPage()">
@@ -128,7 +130,7 @@
             <div class="col-lg-3">
                 <div class="right-content">
                     <h5><i class="fa fa-map-marker"></i> Free Shipping</h5>
-                    <span>As a registered user <br>you show your support,<br>and you enjoy free shipping on your first order from Auroroa!</span>
+                    <span>As a registered user <br>you show your support,<br>and you enjoy free shipping on your first order from Aurora!</span>
                 </div>
             </div>
         </div>
@@ -140,6 +142,49 @@
 <div class="map-image">
     <img src="assets/images/about-map-image.jpg" alt="Maps of 3 Venues">
 </div>
+
+
+<h1>Most popular...</h1>
+<br />
+<div class="container">
+    <!-- Add a new class 'horizontal-scroll' to the row -->
+    <div class="row horizontal-scroll">
+
+        @{
+            List<int> best = new List<int>() { 27, 33, 34, 37 };
+            if (Model != null)
+            {
+                foreach (var product in Model.Products)
+                {
+                    if (best.Contains(product.product_ID))
+                    {
+                        <div class="col-lg-4">
+                            <div class="event-item">
+                                <div class="thumb">
+                                    <a href=" @Url.Action("Details", "Home", new { id = product.product_ID })"><img src="@product.img_link" alt=""></a>
+                                </div>
+                                <div class="down-content">
+                                    <a href="event-details.html"><h4>@product.name</h4></a>
+                                    <ul>
+                                        <li>Piece Count: @product.num_parts</li>
+                                        <li>Color: @product.primary_color</li>
+                                        <li><a href=" @Url.Action("Details", "Home", new { id = product.product_ID })">View Item</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                // Handle scenario where Model is null
+                <p>No products available.</p>
+            }
+        }
+    </div>
+</div>
+
 
 <!-- *** User Recommendations *** -->
 <div class="also-like">
@@ -204,92 +249,20 @@
 </div>
 
 
-<!-- *** Featured Lego Sets ***-->
-<div class="venue-tickets">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-heading">
-                    <h2>Featured Lego Sets</h2>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="venue-item">
-                    <div class="thumb">
-                        <img src="assets/images/venue-01.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                        <div class="left-content">
-                            <div class="main-white-button">
-                                <a href="ticket-details.html">Purchase Tickets</a>
-                            </div>
-                        </div>
-                        <div class="right-content">
-                            <h4>Radio City Musical Hall</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur vinzi iscing elit, sed doers kontra.</p>
-                            <ul>
-                                <li><i class="fa fa-sitemap"></i>250</li>
-                                <li><i class="fa fa-user"></i>500</li>
-                            </ul>
-                            <div class="price">
-                                <span>1 ticket<br>from <em>$45</em></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="venue-item">
-                    <div class="thumb">
-                        <img src="assets/images/venue-02.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                        <div class="left-content">
-                            <div class="main-white-button">
-                                <a href="ticket-details.html">Purchase Tickets</a>
-                            </div>
-                        </div>
-                        <div class="right-content">
-                            <h4>Madison Square Garden</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur vinzi iscing elit, sed doers kontra.</p>
-                            <ul>
-                                <li><i class="fa fa-sitemap"></i>450</li>
-                                <li><i class="fa fa-user"></i>650</li>
-                            </ul>
-                            <div class="price">
-                                <span>1 ticket<br>from <em>$55</em></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="venue-item">
-                    <div class="thumb">
-                        <img src="assets/images/venue-03.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                        <div class="left-content">
-                            <div class="main-white-button">
-                                <a href="ticket-details.html">Purchase Tickets</a>
-                            </div>
-                        </div>
-                        <div class="right-content">
-                            <h4>Royce Hall</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur vinzi iscing elit, sed doers kontra.</p>
-                            <ul>
-                                <li><i class="fa fa-sitemap"></i>450</li>
-                                <li><i class="fa fa-user"></i>750</li>
-                            </ul>
-                            <div class="price">
-                                <span>1 ticket<br>from <em>$65</em></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
+
+
+<style>
+    .horizontal-scroll {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+    }
+
+    .horizontal-scroll .col-lg-4 {
+        flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+    }
+
+</style>

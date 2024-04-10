@@ -48,6 +48,11 @@ services.AddDefaultIdentity<IdentityUser>(options =>
     options.SignIn.RequireConfirmedEmail = false;
 }).AddRoles<IdentityRole>()
   .AddEntityFrameworkStores<AuroraContext>();
+// Used for cart sessions
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 services.AddDatabaseDeveloperPageExceptionFilter();
 services.AddControllersWithViews();
@@ -80,6 +85,10 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// For cart sessions
+app.UseSession();
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
