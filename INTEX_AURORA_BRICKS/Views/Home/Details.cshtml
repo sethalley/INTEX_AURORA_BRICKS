@@ -51,7 +51,7 @@
     .Where(r => r.Product_ID == productId)
     .ToList(); // Materialize the query here
 }
-<div>
+<div style="color:slategray;">
     <!-- *** Featured Lego Sets ***-->
     <div class="venue-tickets">
         <div class="container-fluid">
@@ -61,9 +61,9 @@
                         <h2>Similar Items...</h2>
                     </div>
                 </div>
-                <div class="col-lg-12">
-                    <div class="venue-item-container">
-                        <div class="venue-items">
+                <div class="col-lg-12" style="color:lightslategrey">
+                    <div class="venue-item-container" style="color:slategrey;">
+                        <div class="venue-items" style="color:slategray;">
                             @{
                                 foreach (var recommendation in recommendations)
                                 {
@@ -84,9 +84,9 @@
                                             // Check if a matching product is found
                                             if (recommendedProduct != null)
                                             {
-                                                <div class="venue-item">
+                                                <div class="venue-item" style="width:325px;">
                                                     <div class="thumb">
-                                                        <img src="@recommendedProduct.img_link" alt="">
+                                                        <img src="@recommendedProduct.img_link" style="width: 100%; max-width:325px;" alt="">
                                                     </div>
                                                     <div class="down-content">
                                                         <div class="left-content">
@@ -95,10 +95,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="right-content">
-                                                            <h4>@recommendedProduct.name</h4>
-                                                            <p>Category: @recommendedProduct.category</p>
+                                                            <h4 id="productName">@recommendedProduct.name</h4>                                                            <p>Category: @recommendedProduct.category</p>
                                                             <ul>
-                                                                <li>Piece Count: @recommendedProduct.num_parts</li>
+                                                                <li>Piece Count: @recommendedProduct.num_parts</li><br />
                                                                 <li>Primary Color: @recommendedProduct.primary_color</li>
                                                             </ul>
                                                             <div class="price">
@@ -155,4 +154,11 @@
     }
 
 </style>
+<script>
+    var productNameElement = document.getElementById("productName");
+    var maxCharacters = 15; // Set the maximum number of characters you want to display
 
+    if (productNameElement.textContent.length > maxCharacters) {
+        productNameElement.textContent = productNameElement.textContent.substring(0, maxCharacters) + "...";
+    }
+</script>
