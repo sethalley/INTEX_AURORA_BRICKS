@@ -1,4 +1,4 @@
-using Miscrosoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace INTEX_AURORA_BRICKS.Models
