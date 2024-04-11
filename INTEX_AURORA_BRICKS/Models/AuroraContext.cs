@@ -14,6 +14,8 @@ namespace INTEX_AURORA_BRICKS.Models
         public DbSet<ItemBasedRecommendations> ItemBasedRecommendations { get; set; }
 
         public DbSet<Cart> Cart { get; set; }
+
+        public DbSet<UserRecommendations> UserRecommendations { get; set; }
     }
 
 
