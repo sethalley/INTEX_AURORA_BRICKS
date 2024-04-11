@@ -83,6 +83,23 @@ else
     app.UseHsts();
 }
 
+// CSP
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("Content-Security-Policy",
+        "default-src 'self'; " +
+        "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "script-src 'self' 'unsafe-inline' https://ajax.googleapis.com https://cdnjs.cloudflare.com; " +
+        "img-src https: data:;"+ // Add your image sources here
+        "frame-src 'none'; " +
+        "base-uri 'self'; " +
+        "form-action 'self'; " +
+        "upgrade-insecure-requests;");
+
+    await next();
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
