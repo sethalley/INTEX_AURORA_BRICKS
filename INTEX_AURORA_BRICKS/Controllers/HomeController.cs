@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using System.Diagnostics;
+using System.Linq;
 using System.Drawing.Printing;
 
 namespace INTEX_II.Controllers
@@ -17,14 +18,14 @@ namespace INTEX_II.Controllers
         private readonly InferenceSession _session;
         //private readonly ILogger<HomeController> _logger;
         // may have to change because dependiing on how we put the recommendation pipeline into azure
-        private readonly SignInManager<IdentityUser> _signInManager;
+        //private readonly SignInManager<IdentityUser> _signInManager;
 
 
         public HomeController(AuroraContext auroraContext, InferenceSession session, SignInManager<IdentityUser> signInManager)
         {
             _auroraContext = auroraContext;
             _session = session;
-            _signInManager = signInManager;
+            //_signInManager = signInManager;
         }
 
 
@@ -361,14 +362,16 @@ namespace INTEX_II.Controllers
                     NamedOnnxValue.CreateFromTensor("float_input", inputTensor)
                 };
 
-                //string predictionResult;
+                string predictionResult;
                 using (var results = _session.Run(inputs)) //makes the prediction with the input from the form
                 {
-                    var prediction = results.First().AsTensor<float>().First();
+                    //var prediction = results.First().AsTensor<float>().First();
                     //Convert.ToBoolean(
+                    var prediction = results.FirstOrDefault(item => item.Name == "output_label")?.AsTensor<long>().ToArray();
+                    predictionResult = prediction != null && prediction.Length > 0 ? class_type_dict.GetValueOrDefault((int)prediction[0], "Unknown") : "Error in prediction";
                 }
 
-                //predictions.Add(new OrderPredictions { Orders = record, Prediction = predictionResult }); //adds the order information and prediction for that order
+                predictions.Add(new OrderPredictions { Orders = record, Prediction = predictionResult }); //adds the order information and prediction for that order
 
             }
             return View(predictions);
