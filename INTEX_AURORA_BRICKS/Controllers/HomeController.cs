@@ -306,7 +306,7 @@ namespace INTEX_II.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteProduct(byte id)
+        public IActionResult DeleteProduct(short id)
         {
             var product = _auroraContext.Products.Find(id);
             if (product == null)
@@ -408,6 +408,13 @@ namespace INTEX_II.Controllers
 
         }
 
+        public IActionResult ConfirmedOrder()
+        {
+            return View();
+        }
 
     }
+
 }
+
+
