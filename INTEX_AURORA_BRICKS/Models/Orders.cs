@@ -40,6 +40,6 @@ namespace INTEX_AURORA_BRICKS.Models
         public bool? Fraud { get; set; }
 
         // Navigation property
-        public virtual Customers Customer { get; set; }
+        public virtual HistoricCustomer HistoricCustomers { get; set; }
     }
 }

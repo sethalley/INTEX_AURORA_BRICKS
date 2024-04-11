@@ -22,6 +22,8 @@ public class UserAdminController : Controller
         _userManager = userManager;
         _roleManager = roleManager;
     }
+
+
     [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> UserAdmin()
@@ -29,7 +31,7 @@ public class UserAdminController : Controller
         var users = _userManager.Users.ToList();
         var userRolesViewModel = new List<UserRoles>();
 
-        foreach (IdentityUser user in users)
+        foreach (Customers user in users)
         {
             var thisViewModel = new UserRoles();
             thisViewModel.UserId = user.Id;
@@ -42,7 +44,17 @@ public class UserAdminController : Controller
         return View(userRolesViewModel);
     }
 
-    private async Task<List<string>> GetUserRoles(IdentityUser user)
+    [HttpGet]
+    
+    public IActionResult ListUsers()
+    {
+        var users = _userManager.Users;
+        return View(users);
+    }
+
+   
+
+    private async Task<List<string>> GetUserRoles(Customers user)
     {
         return new List<string>(await _userManager.GetRolesAsync((Customers)user));
     }
