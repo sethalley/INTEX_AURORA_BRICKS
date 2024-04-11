@@ -22,14 +22,19 @@ namespace INTEX_II.Controllers
         {
             IQueryable<Products> productsQuery = _auroraContext.Products;
 
-            //Retrieve products for the specific page
+            // Retrieve products for the specific page
             var products = productsQuery
                                 .OrderBy(p => p.product_ID) // Replace Product_ID with your actual primary key or sorting preference
                                 .ToList();
-            var viewModel = new ProductsViewModel
+
+            var userRecommendations = _auroraContext.UserRecommendations.ToList(); // Retrieve all user recommendations
+
+            var viewModel = new IndexViewModel
             {
-                Products = products
+                Products = products,
+                UserRecommendations = userRecommendations
             };
+
             return View(viewModel);
         }
 
