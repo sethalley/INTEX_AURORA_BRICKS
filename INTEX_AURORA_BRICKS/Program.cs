@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using System.Configuration;
+using System.Net;
 
 
 
@@ -29,6 +30,36 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+//// HTTPS Redirection
+//builder.Services.AddHttpsRedirection(options =>
+//{
+//    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+//    options.HttpsPort = 443; // Set the HTTPS port your app is using
+//});
+
+//// HSTS?
+//builder.Services.AddHsts(options =>
+//{
+//    options.Preload = true;
+//    options.IncludeSubDomains = true;
+//    options.MaxAge = TimeSpan.FromDays(60);
+//    options.ExcludedHosts.Add("example.com");
+//    options.ExcludedHosts.Add("www.example.com");
+//});
+
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromDays(60); // Start with a low value for testing
+                                            // Optionally exclude specific hosts
+                                            // options.ExcludedHosts.Add("example.com");
+});
+
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+});
 
 services.AddDbContext<AuroraContext>(options =>
 {
@@ -62,6 +93,9 @@ services.AddControllersWithViews();
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -86,8 +120,24 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+// CSP
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("Content-Security-Policy",
+        "default-src 'self'; " +
+        "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "script-src 'self' 'unsafe-inline' https://ajax.googleapis.com https://cdnjs.cloudflare.com; " +
+        "img-src https: data:;"+ // Add your image sources here
+        "frame-src 'none'; " +
+        "base-uri 'self'; " +
+        "form-action 'self'; " +
+        "upgrade-insecure-requests;");
+
+    await next();
+});
+
+
 
 // For cart sessions
 app.UseSession();

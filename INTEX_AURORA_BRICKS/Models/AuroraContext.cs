@@ -23,6 +23,9 @@ namespace INTEX_AURORA_BRICKS.Models
             });
         }
 
+        public DbSet<UserRecommendations> UserRecommendations { get; set; }
+    }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

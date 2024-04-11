@@ -26,6 +26,14 @@ namespace INTEX_AURORA_BRICKS.Models
 
         public int? age { get; set; }
 
+        //public double? Age
+        //{
+        //    get
+        //    {
+        //        if (BirthDate == null)
+        //        {
+        //            return 0; // Handle this case based on your application logic
+        //        }
         public int? recId { get; set; }
 
 

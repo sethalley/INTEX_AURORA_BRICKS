@@ -2,7 +2,7 @@
 
 <h1>@(Model == null ? "Add New Product" : "Edit Product")</h1>
 
-<form asp-action="@(Model == null ? "AddProduct" : "UpdateProduct")" method="post" id="newLegoForm">
+<form asp-action="@((Model == null || Model.product_ID == 0) ? "AddProduct" : "UpdateProduct")" method="post" id="newLegoForm">
     <input type="hidden" id="product_ID" name="product_ID" value="@Model.product_ID">
     <div class="form-group">
         <label for="name">Name:</label>
@@ -40,8 +40,9 @@
         <label for="img_link">Image Link:</label>
         <input type="text" id="img_link" name="img_link" class="form-control" value="@Model.img_link">
     </div>
-    <button type="submit" class="btn btn-primary">@((Model == null ? "Add" : "Update") + " Products")</button>
+    <button type="submit" class="btn btn-primary">@((Model == null || Model.product_ID == 0) ? "Add" : "Update") Products</button>
 </form>
+
 
 
 <style>

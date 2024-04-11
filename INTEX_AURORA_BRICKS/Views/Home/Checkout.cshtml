@@ -1,0 +1,121 @@
+﻿@model INTEX_AURORA_BRICKS.Models.Cart
+
+<!-- Cart Display Section -->
+<style>
+    .checkout-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .checkout-content {
+        display: flex;
+        flex-direction: row;
+        width: 800px; /* Adjust the width as needed */
+        background-color: lightgray;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .cart-section {
+        flex: 2;
+        padding-right: 20px; /* Add spacing between the halves */
+    }
+
+    .payment-section {
+        flex: 1;
+    }
+
+        .payment-section form {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .payment-section form label {
+                margin-bottom: 10px;
+            }
+
+            .payment-section form input,
+            .payment-section form button {
+                margin-bottom: 15px;
+            }
+
+    .cart-item-info h3 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100px; /* Adjust as needed */
+    }
+
+
+</style>
+
+<div class="checkout-container">
+    <div class="checkout-content">
+        <!-- Cart Display Section -->
+        <div class="cart-section">
+            <div class="cart-heading">
+                <h2>Your Cart</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Product</th>
+                    <th>Info</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                </tr>
+                <tbody>
+                    @foreach (var line in Model.Lines ?? Enumerable.Empty<Cart.CartLine>())
+                    {
+                        <tr class="cart-item">
+                            <td>
+                                <div class="cart-item-details">
+                                    <img src="@line.Products.img_link" alt="@line.Products.name" style="max-width: 100px; max-height: 100px;" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cart-item-info">
+                                    <h3>@line.Products.name</h3>
+                                    <p>Piece Count: @line.Products.num_parts</p>
+                                </div>
+                            </td>
+                            <td class="cart-item-quantity" style="text-align: center;">
+                                <span>@line.Quantity</span>
+                            </td>
+                            <td>$@line.Products.price</td>
+                            <td class="cart-item-total" id="subtotal-@line.Products.product_ID">$@(line.Quantity * line.Products.price)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- Payment Information Section -->
+        <div class="payment-section">
+            <h2>Payment Information</h2>
+            <form>
+                <!-- Mock payment form fields -->
+                <label for="cardNumber">Card Number:</label>
+                <input type="text" id="cardNumber" name="cardNumber" />
+
+                <label for="expiryDate">Expiry Date:</label>
+                <input type="text" id="expiryDate" name="expiryDate" />
+
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv" />
+
+                <div>
+                    <a href="@Url.Action("About", "Home")">
+                        <button type="submit">Submit Payment</button>
+                    </a>
+                </div>
+
+            </form>
+            </br>
+            <h2>Total: $@Model.CalculateTotal()</h2>
+        </div>
+    </div>
+</div>
