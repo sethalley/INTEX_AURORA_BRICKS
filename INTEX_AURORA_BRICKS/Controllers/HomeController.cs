@@ -3,6 +3,8 @@ using INTEX_AURORA_BRICKS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.ML.OnnxRuntime;
+using Microsoft.ML.OnnxRuntime.Tensors;
 using System.Diagnostics;
 using System.Drawing.Printing;
 
@@ -11,10 +13,14 @@ namespace INTEX_II.Controllers
     public class HomeController : Controller
     {
         private readonly AuroraContext _auroraContext;
+        private readonly InferenceSession _session;
+        //private readonly ILogger<HomeController> _logger;
+        // may have to change because dependiing on how we put the recommendation pipeline into azure
 
-        public HomeController(AuroraContext auroraContext)
+        public HomeController(AuroraContext auroraContext, InferenceSession session)
         {
             _auroraContext = auroraContext;
+            _session = session;
         }
 
 
@@ -284,6 +290,86 @@ namespace INTEX_II.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult ReviewOrders()
+        {
+            var records = _auroraContext.Orders
+                .OrderByDescending(o => o.Date)
+                .Take(20)
+                .ToList();//fetch 20 most recent records
+            var predictions = new List<OrderPredictions>(); //model for the view
+
+            var class_type_dict = new Dictionary<int, string>
+            {
+                {0, "Not Fraud" },
+                {1, "Fraud" }
+            };
+
+            foreach (var record in records)
+            {
+                //prepare features
+                var input = new List<float>
+                {
+                    (float)record.CustomerId,
+                    (float)record.Time,
+                    (float)(record.Amount ?? 0),
+
+                    //dummy code
+                    record.DayOfWeek == "Mon" ? 1: 0,
+                    record.DayOfWeek == "Sat" ? 1: 0,
+                    record.DayOfWeek == "Sun" ? 1: 0,
+                    record.DayOfWeek == "Thu" ? 1: 0,
+                    record.DayOfWeek == "Tue" ? 1: 0,
+                    record.DayOfWeek == "Wed" ? 1: 0,
+
+                    record.EntryMode == "PIN" ? 1: 0,
+                    record.EntryMode == "Tap" ? 1: 0,
+
+                    record.TypeOfTransaction == "Online" ? 1: 0,
+                    record.TypeOfTransaction == "POS" ? 1: 0,
+
+                    record.CountryOfTransaction == "India" ? 1: 0,
+                    record.CountryOfTransaction == "Russia" ? 1: 0,
+                    record.CountryOfTransaction == "USA" ? 1: 0,
+                    record.CountryOfTransaction == "UnitedKingdom" ? 1: 0,
+
+                    (record.ShippingAddress ?? record.CountryOfTransaction) == "India" ? 1: 0,
+                    (record.ShippingAddress ?? record.CountryOfTransaction) == "Russia" ? 1: 0,
+                    (record.ShippingAddress ?? record.CountryOfTransaction) == "USA" ? 1: 0,
+                    (record.ShippingAddress ?? record.CountryOfTransaction ) == "UnitedKingdom" ? 1:0,
+
+                    record.Bank == "HSBC" ? 1: 0,
+                    record.Bank == "Halifax" ? 1: 0,
+                    record.Bank == "Lloyds" ? 1: 0,
+                    record.Bank == "Metro" ? 1: 0,
+                    record.Bank == "Monzo" ? 1: 0,
+                    record.Bank == "RBS" ? 1: 0,
+
+                    record.TypeOfCard == "Visa" ? 1: 0
+
+                };
+
+                var inputTensor = new DenseTensor<float>(input.ToArray(), new[] { 1, input.Count });
+
+                var inputs = new List<NamedOnnxValue>
+                {
+                    NamedOnnxValue.CreateFromTensor("float_input", inputTensor)
+                };
+
+                //string predictionResult;
+                using (var results = _session.Run(inputs)) //makes the prediction with the input from the form
+                {
+                    var prediction = results.First().AsTensor<float>().First();
+                    //Convert.ToBoolean(
+                }
+
+                //predictions.Add(new OrderPredictions { Orders = record, Prediction = predictionResult }); //adds the order information and prediction for that order
+
+            }
+            return View(predictions);
+
+        }
+
 
     }
 }

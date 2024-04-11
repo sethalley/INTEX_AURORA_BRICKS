@@ -16,6 +16,14 @@ namespace INTEX_AURORA_BRICKS.Models
         public DbSet<Cart> Cart { get; set; }
 
         public DbSet<UserRecommendations> UserRecommendations { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+        
+        public DbSet<OrderPredictions> OrderPredictions { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OrderPredictions>().HasNoKey();
+        }
     }
 
 

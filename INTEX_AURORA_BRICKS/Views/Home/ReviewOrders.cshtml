@@ -1,0 +1,78 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<INTEX_AURORA_BRICKS.Models.OrderPredictions>
+@{
+    ViewData["Title"] = "Predictions";
+    var classTypeDict = new Dictionary<int, string>
+    {
+        {0, "Not Fraud"},
+        {1, "Fraud"}
+    };
+}
+
+<style>
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .full-width-table {
+        margin-left: -50px;
+        margin-right: 0;
+    }
+
+    .table {
+        width: auto;
+        margin-bottom: 0;
+    }
+
+    .prediction-cell {
+        background-color: #e0f2f1;
+    }
+
+</style>
+
+<h2>Orders</h2>
+<div class="full-width-table"> @*maybe redo this styling*@
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>TransactionId</th>
+                <th>CustomerId</th>
+                <th>Date</th>
+                <th>WeekDay</th>
+                <th>Time(Military)</th>
+                <th>Entry Mode</th>
+                <th>Amount($)</th>
+                <th>Transaction Type</th>
+                <th>Country of transaction</th>
+                <th>Shipping Address</th>
+                <th>Bank</th>
+                <th>Type of Card</th>
+                <th>Fraud</th>
+                <th class="prediction-cell">Fraud Prediction</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Orders.TransactionId</td>
+                    <td>@item.Orders.CustomerId</td>
+                    <td>@item.Orders.Date</td>
+                    <td>@item.Orders.DayOfWeek</td>
+                    <td>@item.Orders.Time</td>
+                    <td>@item.Orders.EntryMode</td>
+                    <td>@item.Orders.Amount</td>
+                    <td>@item.Orders.TypeOfTransaction</td>
+                    <td>@item.Orders.CountryOfTransaction</td>
+                    <td>@item.Orders.ShippingAddress</td>
+                    <td>@item.Orders.Bank</td>
+                    <td>@item.Orders.TypeOfCard</td>
+                    <td>@item.Orders.Fraud</td>
+                    <td class="prediction-cell">@item.Prediction</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
