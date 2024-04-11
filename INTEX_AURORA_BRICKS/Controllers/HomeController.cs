@@ -33,16 +33,21 @@ namespace INTEX_II.Controllers
         //{
         //    IQueryable<Products> productsQuery = _auroraContext.Products;
 
-        //    //Retrieve products for the specific page
-        //    var products = productsQuery
-        //                        .OrderBy(p => p.product_ID) // Replace Product_ID with your actual primary key or sorting preference
-        //                        .ToList();
-        //    var viewModel = new ProductsViewModel
-        //    {
-        //        Products = products
-        //    };
-        //    return View(viewModel);
-        //}
+            // Retrieve products for the specific page
+            var products = productsQuery
+                                .OrderBy(p => p.product_ID) // Replace Product_ID with your actual primary key or sorting preference
+                                .ToList();
+
+            var userRecommendations = _auroraContext.UserRecommendations.ToList(); // Retrieve all user recommendations
+
+            var viewModel = new IndexViewModel
+            {
+                Products = products,
+                UserRecommendations = userRecommendations
+            };
+
+            return View(viewModel);
+        }
 
 
         public IActionResult About()
@@ -88,6 +93,21 @@ namespace INTEX_II.Controllers
             return RedirectToAction("Cart"); // Redirect to the Cart action
         }
 
+        public IActionResult RemoveFromCart(int productId)
+        {
+            var cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
+            var productToRemove = cart.Lines.FirstOrDefault(x => x.Products.product_ID == productId)?.Products;
+
+            if (productToRemove != null)
+            {
+                cart.RemoveLine(productToRemove);
+                HttpContext.Session.SetJson("cart", cart); // Save the updated cart back to session
+            }
+
+            return RedirectToAction("Cart");
+        }
+
+
         [HttpPost]
         public IActionResult UpdateCart(int productId, int quantity)
         {
@@ -104,6 +124,14 @@ namespace INTEX_II.Controllers
             }
 
             return BadRequest("Product not found");
+        }
+
+        public IActionResult Checkout()
+        {
+            var cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart(); // Retrieve the cart from session
+
+            // Pass the cart directly to the view
+            return View(cart);
         }
 
 
@@ -223,8 +251,10 @@ namespace INTEX_II.Controllers
         // Action method to display the form for adding a new product
         public IActionResult CreateProd()
         {
-            return View();
+            Products newProduct = new Products(); // Create a new instance of the Products model
+            return View(newProduct); // Pass the new instance to the view
         }
+
 
         // Action method to handle the POST request for adding a new product
         [HttpPost]
