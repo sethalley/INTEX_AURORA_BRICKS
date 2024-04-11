@@ -2,7 +2,7 @@
 
 namespace INTEX_AURORA_BRICKS.Models
 {
-    public class Customer
+    public class HistoricCustomer
     {
         [Key]
         public short CustomerId { get; set; }
