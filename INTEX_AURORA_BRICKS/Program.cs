@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using System.Configuration;
+using System.Net;
 
 
 
@@ -27,11 +28,35 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// HTTPS Redirection
+//// HTTPS Redirection
+//builder.Services.AddHttpsRedirection(options =>
+//{
+//    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+//    options.HttpsPort = 443; // Set the HTTPS port your app is using
+//});
+
+//// HSTS?
+//builder.Services.AddHsts(options =>
+//{
+//    options.Preload = true;
+//    options.IncludeSubDomains = true;
+//    options.MaxAge = TimeSpan.FromDays(60);
+//    options.ExcludedHosts.Add("example.com");
+//    options.ExcludedHosts.Add("www.example.com");
+//});
+
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromDays(60); // Start with a low value for testing
+                                            // Optionally exclude specific hosts
+                                            // options.ExcludedHosts.Add("example.com");
+});
+
 builder.Services.AddHttpsRedirection(options =>
 {
-    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-    options.HttpsPort = 443; // Set the HTTPS port your app is using
+    options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
 });
 
 services.AddDbContext<AuroraContext>(options =>
@@ -64,6 +89,9 @@ services.AddDatabaseDeveloperPageExceptionFilter();
 services.AddControllersWithViews();
 
 var app = builder.Build();
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -106,8 +134,7 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+
 
 // For cart sessions
 app.UseSession();
