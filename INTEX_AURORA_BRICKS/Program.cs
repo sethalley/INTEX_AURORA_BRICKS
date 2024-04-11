@@ -27,6 +27,12 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// HTTPS Redirection
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+    options.HttpsPort = 443; // Set the HTTPS port your app is using
+});
 
 services.AddDbContext<AuroraContext>(options =>
 {
