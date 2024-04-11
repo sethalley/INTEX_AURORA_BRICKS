@@ -1,7 +1,10 @@
-﻿namespace INTEX_AURORA_BRICKS.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace INTEX_AURORA_BRICKS.Models
 {
     public class UserRecommendations
     {
+        [Key]
         public int customer_ID { get; set; }
         public int Recommendation_1_ID { get; set; }
         public int Recommendation_2_ID { get; set; }
