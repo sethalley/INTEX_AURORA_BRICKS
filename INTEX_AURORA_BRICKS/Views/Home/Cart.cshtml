@@ -1,162 +1,4 @@
-﻿@* @model INTEX_AURORA_BRICKS.Models.Cart
-
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        /* General styles */
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            color: #333;
-            font-weight: bold;
-        }
-
-        td {
-            text-align: center;
-        }
-
-        .total-row td {
-            font-weight: bold;
-        }
-
-        /* Cart specific styles */
-        .cart-heading {
-            background-color: #f8f9fa;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .cart-item {
-            border-bottom: 1px solid #ddd;
-        }
-
-        .cart-item img {
-            max-width: 80px;
-            display: block;
-            margin: auto;
-        }
-
-        .cart-item-details {
-            display: flex;
-            align-items: center;
-        }
-
-        .cart-item-info {
-            flex: 1;
-            text-align: left;
-            padding: 10px;
-        }
-
-        .cart-item-info h3 {
-            margin-bottom: 5px;
-        }
-
-        .cart-item-info p {
-            margin: 0;
-            color: #666;
-        }
-
-        .cart-item-quantity input {
-            width: 50px;
-            padding: 5px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-
-        .cart-item-total {
-            font-weight: bold;
-        }
-
-        .cart-total {
-            margin-top: 20px;
-            text-align: right;
-        }
-
-        .cart-actions {
-            margin-top: 20px;
-            text-align: right;
-        }
-
-        .cart-actions button {
-            padding: 10px 20px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-
-        .cart-actions button:hover {
-            background-color: #555;
-        }
-    </style>
-</head>
-<body>
-    <div class="cart-heading">
-        <h2>Your Cart</h2>
-    </div>
-
-    <table>
-        <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Subtotal</th>
-        </tr>
-        <tbody>
-            @foreach (var line in Model.Lines ?? Enumerable.Empty<Cart.CartLine>())
-            {
-                <tr class="cart-item">
-                    <td>
-                        <div class="cart-item-details">
-                            <img src="@line.Products.img_link" alt="@line.Products.name" />
-                            <div class="cart-item-info">
-                                <h3>@line.Products.name</h3>
-                                <p>Piece Count: @line.Products.num_parts</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="cart-item-quantity">
-                        <input type="number" value="@line.Quantity" min="1" />
-                    </td>
-                    <td>$@line.Products.price</td>
-                    <td class="cart-item-total">$@(line.Quantity * line.Products.price)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <div class="cart-total">
-        <p>Total: $@Model.CalculateTotal()</p>
-    </div>
-
-    <div class="cart-actions">
-        <button onclick="window.location.href='@Url.Action("Products", "Home")'">Keep Shopping</button>
-        <button>Proceed to Checkout</button>
-    </div>
-</body>
-</html>
- *@
-
-@model INTEX_AURORA_BRICKS.Models.Cart
+﻿@model INTEX_AURORA_BRICKS.Models.Cart
 
 <!DOCTYPE html>
 <html>
@@ -297,6 +139,12 @@
                     </td>
                     <td>$@line.Products.price</td>
                     <td class="cart-item-total" id="subtotal-@line.Products.product_ID">$@(line.Quantity * line.Products.price)</td>
+                    <td>
+                        <form method="post" asp-action="RemoveFromCart">
+                            <input type="hidden" name="productId" value="@line.Products.product_ID" />
+                            <button type="submit" style="background-color: #ffcccc;">Remove</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -308,8 +156,15 @@
 
     <div class="cart-actions">
         <button onclick="window.location.href='@Url.Action("Products", "Home")'">Keep Shopping</button>
-        <button>Update Cart</button>
-        <button>Proceed to Checkout</button>
+        <button id="checkoutButton">Proceed to Checkout</button>
+        @* <button type="submit" formmethod="post" asp-action="Checkout">Proceed to Checkout</button> *@
+@*         <button>Update Cart</button> *@
+  @*       <form method="post" asp-action="Checkout">
+            <input type="hidden" name="productId"/>
+            <button type="submit" asp-action="Checkout" class="image-button">Proceed to Checkout</button>
+        </form> *@
+
+ 
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery -->
@@ -319,20 +174,27 @@
             var subtotal = quantity * price;
             document.getElementById("subtotal-" + productId).textContent = "$" + subtotal.toFixed(2);
 
-            // Send AJAX request to update cart
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("UpdateCart", "Cart")",
-                data: { productId: productId, quantity: quantity },
-                success: function (response) {
-                    // Update the total displayed on the page
-                    $(".cart-total p").text("Total: $" + response.toFixed(2));
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        }
+    </script>
+
+    <script>
+        document.getElementById("checkoutButton").addEventListener("click", function () {
+            // Create a hidden form element
+            var form = document.createElement("form");
+            form.setAttribute("method", "post");
+            form.setAttribute("action", "/Home/Checkout"); // Update the action URL as needed
+            form.style.display = "none";
+
+            // Add any additional data to the form if needed
+            var hiddenInput = document.createElement("input");
+            hiddenInput.setAttribute("type", "hidden");
+            hiddenInput.setAttribute("name", "productId");
+            hiddenInput.setAttribute("value", "yourProductId");
+            form.appendChild(hiddenInput);
+
+            // Append the form to the body and submit it
+            document.body.appendChild(form);
+            form.submit();
+        });
     </script>
 
 </body>
