@@ -1,6 +1,7 @@
 using INTEX_AURORA_BRICKS.Infrastructure;
 using INTEX_AURORA_BRICKS.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.ML.OnnxRuntime;
@@ -16,28 +17,31 @@ namespace INTEX_II.Controllers
         private readonly InferenceSession _session;
         //private readonly ILogger<HomeController> _logger;
         // may have to change because dependiing on how we put the recommendation pipeline into azure
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public HomeController(AuroraContext auroraContext, InferenceSession session)
+
+        public HomeController(AuroraContext auroraContext, InferenceSession session, SignInManager<IdentityUser> signInManager)
         {
             _auroraContext = auroraContext;
             _session = session;
+            _signInManager = signInManager;
         }
 
 
-        public IActionResult Index()
-        {
-            IQueryable<Products> productsQuery = _auroraContext.Products;
+        //public IActionResult Index()
+        //{
+        //    IQueryable<Products> productsQuery = _auroraContext.Products;
 
-            //Retrieve products for the specific page
-            var products = productsQuery
-                                .OrderBy(p => p.product_ID) // Replace Product_ID with your actual primary key or sorting preference
-                                .ToList();
-            var viewModel = new ProductsViewModel
-            {
-                Products = products
-            };
-            return View(viewModel);
-        }
+        //    //Retrieve products for the specific page
+        //    var products = productsQuery
+        //                        .OrderBy(p => p.product_ID) // Replace Product_ID with your actual primary key or sorting preference
+        //                        .ToList();
+        //    var viewModel = new ProductsViewModel
+        //    {
+        //        Products = products
+        //    };
+        //    return View(viewModel);
+        //}
 
 
         public IActionResult About()
@@ -291,6 +295,7 @@ namespace INTEX_II.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        //[Authorize]
         public IActionResult ReviewOrders()
         {
             var records = _auroraContext.Orders
