@@ -1,7 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model INTEX_AURORA_BRICKS.Models.ProductsViewModel
+@model INTEX_AURORA_BRICKS.Models.IndexViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@using System.Security.Claims
+
 <br />
 <br />
 <!-- ***** Main Banner Area Start ***** -->
@@ -144,112 +149,87 @@
 </div>
 
 
-<h1>Most popular...</h1>
-<br />
-<div class="container">
-    <!-- Add a new class 'horizontal-scroll' to the row -->
-    <div class="row horizontal-scroll">
+@if (SignInManager.IsSignedIn(User))
+{
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+    if (userIdClaim != null)
+    {
+        <h1>Selected for you...</h1>
+        <br />
+        <p>User ID: @userIdClaim.Value</p>
+        Random random = new Random();
+        int randomNumber = random.Next(1, 11);
+        <p>Customer ID (Randomly generated): @randomNumber</p>
+        <br />
 
-        @{
-            List<int> best = new List<int>() { 27, 33, 34, 37 };
-            if (Model != null)
+        var recommendation = Model.UserRecommendations.FirstOrDefault(r => r.customer_ID == randomNumber);
+        List<int> tailored = new List<int>() { recommendation.Recommendation_1_ID, recommendation.Recommendation_2_ID, recommendation.Recommendation_3_ID, recommendation.Recommendation_4_ID, recommendation.Recommendation_5_ID };
+        foreach (var product in Model.Products)
+        {
+            if (tailored.Contains(product.product_ID))
             {
-                foreach (var product in Model.Products)
-                {
-                    if (best.Contains(product.product_ID))
-                    {
-                        <div class="col-lg-4">
-                            <div class="event-item">
-                                <div class="thumb">
-                                    <a href=" @Url.Action("Details", "Home", new { id = product.product_ID })"><img src="@product.img_link" alt=""></a>
-                                </div>
-                                <div class="down-content">
-                                    <a href="event-details.html"><h4>@product.name</h4></a>
-                                    <ul>
-                                        <li>Piece Count: @product.num_parts</li>
-                                        <li>Color: @product.primary_color</li>
-                                        <li><a href=" @Url.Action("Details", "Home", new { id = product.product_ID })">View Item</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href=" @Url.Action("Details", "Home", new { id = product.product_ID })"><img src="@product.img_link" alt=""></a>
                         </div>
-                    }
-                }
-            }
-            else
-            {
-                // Handle scenario where Model is null
-                <p>No products available.</p>
+                        <div class="down-content">
+                            <a href="event-details.html"><h4>@product.name</h4></a>
+                            <ul>
+                                <li>Piece Count: @product.num_parts</li>
+                                <li>Color: @product.primary_color</li>
+                                <li><a href=" @Url.Action("Details", "Home", new { id = product.product_ID })">View Item</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             }
         }
-    </div>
-</div>
-
-
-<!-- *** User Recommendations *** -->
-<div class="also-like">
+    }
+}
+else
+{
+    <h1>Most popular...</h1>
+    <br />
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h2>You Might Enjoy...</h2>
-            </div>
-            <div class="col-lg-4">
-                <div class="like-item">
-                    <div class="thumb">
-                        <a href="event-details.html"><img src="assets/images/like-01.jpg" alt=""></a>
-                        <div class="icons">
-                            <ul>
-                                <li><a href="event-details.html"><i class="fa fa-arrow-right"></i></a></li>
-                                <li><a href="ticket-details.html"><i class="fa fa-ticket"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>Sept 10 to 14, 2021</span>
-                        <a href="event-details.html"><h4>Wonder Land Music and Arts Festival</h4></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="like-item">
-                    <div class="thumb">
-                        <a href="event-details.html"><img src="assets/images/like-02.jpg" alt=""></a>
-                        <div class="icons">
-                            <ul>
-                                <li><a href="event-details.html"><i class="fa fa-arrow-right"></i></a></li>
-                                <li><a href="ticket-details.html"><i class="fa fa-ticket"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>Oct 11 to 16, 2021</span>
-                        <a href="event-details.html"><h4>Big Water Splashing Festival</h4></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="like-item">
-                    <div class="thumb">
-                        <a href="event-details.html"><img src="assets/images/like-03.jpg" alt=""></a>
-                        <div class="icons">
-                            <ul>
-                                <li><a href="event-details.html"><i class="fa fa-arrow-right"></i></a></li>
-                                <li><a href="ticket-details.html"><i class="fa fa-ticket"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="down-content">
-                        <span>Nov 10 to 18, 2021</span>
-                        <a href="event-details.html"><h4>Tiger Dance Hip Hop Festival</h4></a>
-                    </div>
-                </div>
-            </div>
+        <!-- Add a new class 'horizontal-scroll' to the row -->
+        <div class="row horizontal-scroll">
+
+            @{
+                List<int> best = new List<int>() { 27, 33, 34, 37 };
+                if (Model != null)
+                {
+                    foreach (var product in Model.Products)
+                    {
+                        if (best.Contains(product.product_ID))
+                        {
+                            <div class="col-lg-4">
+                                <div class="event-item">
+                                    <div class="thumb">
+                                        <a href=" @Url.Action("Details", "Home", new { id = product.product_ID })"><img src="@product.img_link" alt=""></a>
+                                    </div>
+                                    <div class="down-content">
+                                        <a href="event-details.html"><h4>@product.name</h4></a>
+                                        <ul>
+                                            <li>Piece Count: @product.num_parts</li>
+                                            <li>Color: @product.primary_color</li>
+                                            <li><a href=" @Url.Action("Details", "Home", new { id = product.product_ID })">View Item</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    // Handle scenario where Model is null
+                    <p>No products available.</p>
+                }
+            }
         </div>
     </div>
-</div>
-
-
-
+}
 
 
 <style>

@@ -36,20 +36,20 @@
     </div>
     <!-- ***** Preloader End ***** -->
     <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky" stye="padding-bottom:5px;">
+    <header class="header-area header-sticky" style="padding-bottom: 5px;">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
-                        <a href="@Url.Action("Index", "Home")" class="logo" style="color:#FFE338;"><img src="~/assets/images/aurora.jpg" style="width:175px;"/></a>
+                        <a href="@Url.Action("Index", "Home")" class="logo" style="color: #FFE338;"><img src="~/assets/images/aurora.jpg" style="width: 175px;" /></a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li><a href="@Url.Action("About", "Home")"><img src="~/assets/images/aboutlabel.jpg" style="width:70px;" /></a></li>
-                            <li><a href="@Url.Action("Products", "Home")"><img src="~/assets/images/productslabel.jpg" style="width:70px;" /></a></li>
-                            <li><a href="@Url.Action("Cart", "Home")"><img src="~/assets/images/cartlabel.jpg" style="width:70px;" /></a></li>
-                            <li><partial name="_LoginPartial" /></li
+                        <ul class="nav" style="display: flex; align-items: center; padding-left: 0;">
+                            <li style="display: inline-block; margin-right: 10px;"><a href="@Url.Action("About", "Home")"><img src="~/assets/images/aboutlabel.jpg" style="width: 70px;" /></a></li>
+                            <li style="display: inline-block; margin-right: 10px;"><a href="@Url.Action("Products", "Home")"><img src="~/assets/images/productslabel.jpg" style="width: 70px;" /></a></li>
+                            <li style="display: inline-block; margin-right: 10px;"><a href="@Url.Action("Cart", "Home")"><img src="~/assets/images/cartlabel.jpg" style="width: 70px;" /></a></li>
+                            <li style="display: inline-block; margin-right: 10px;"><partial name="_LoginPartial" /></li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -60,6 +60,8 @@
             </div>
         </div>
     </header>
+
+
     <!-- ***** Header Area End ***** -->
     <div class="container">
         <main role="main" class="pb-3">
