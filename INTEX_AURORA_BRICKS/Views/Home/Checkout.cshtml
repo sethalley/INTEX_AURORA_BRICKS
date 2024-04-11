@@ -107,7 +107,12 @@
                 <label for="cvv">CVV:</label>
                 <input type="text" id="cvv" name="cvv" />
 
-                <button type="submit">Submit Payment</button>
+                <div>
+                    <a href="@Url.Action("About", "Home")">
+                        <button type="submit">Submit Payment</button>
+                    </a>
+                </div>
+
             </form>
             </br>
             <h2>Total: $@Model.CalculateTotal()</h2>

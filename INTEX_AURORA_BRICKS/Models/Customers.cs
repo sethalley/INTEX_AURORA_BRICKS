@@ -5,7 +5,7 @@ namespace INTEX_AURORA_BRICKS.Models
     public class Customer
     {
         [Key]
-        public int CustomerId { get; set; }
+        public short CustomerId { get; set; }
 
         public string? FirstName { get; set; }
 
@@ -18,7 +18,7 @@ namespace INTEX_AURORA_BRICKS.Models
         [StringLength(1)]
         public string? Gender { get; set; }
 
-        //public int? Age
+        //public double? Age
         //{
         //    get
         //    {
