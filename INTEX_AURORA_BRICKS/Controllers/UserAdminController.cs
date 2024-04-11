@@ -14,10 +14,10 @@ using System.Threading.Tasks;
 
 public class UserAdminController : Controller
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<Customers> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
-    public UserAdminController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public UserAdminController(UserManager<Customers> userManager, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -44,7 +44,7 @@ public class UserAdminController : Controller
 
     private async Task<List<string>> GetUserRoles(IdentityUser user)
     {
-        return new List<string>(await _userManager.GetRolesAsync(user));
+        return new List<string>(await _userManager.GetRolesAsync((Customers)user));
     }
     [Authorize(Roles = "Admin")]
 

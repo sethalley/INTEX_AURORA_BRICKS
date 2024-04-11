@@ -1,42 +1,33 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.ComponentModel.DataAnnotations;
+
+
 
 namespace INTEX_AURORA_BRICKS.Models
 {
-    public class Customer
+    public class Customers : IdentityUser
     {
-        [Key]
-        public int CustomerId { get; set; }
+        public Customers()
+        {
+            // Constructor logic, if any
+        }
 
-        public string? FirstName { get; set; }
+        public string first_name { get; set; }
 
-        public string? LastName { get; set; }
+        public string last_name { get; set; }
 
-        public DateTime? BirthDate { get; set; }
+        public DateTime? birth_date { get; set; }
 
-        public string? CountryOfResidence { get; set; }
+        public string country_of_residence { get; set; }
 
         [StringLength(1)]
-        public string? Gender { get; set; }
+        public string? gender { get; set; }
 
-        //public int? Age
-        //{
-        //    get
-        //    {
-        //        if (BirthDate == null)
-        //        {
-        //            return 0; // Handle this case based on your application logic
-        //        }
+        public int? age { get; set; }
 
-        //        DateTime now = DateTime.Today;
-        //        int age = now.Year - BirthDate.Year;
-        //        if (BirthDate > now.AddYears(-age))
-        //        {
-        //            age--;
-        //        }
+        public int? recId { get; set; }
 
-        //        return age;
-        //    }
-        //    // Note: Age is typically calculated based on BirthDate, so no need for a setter in this case
-        //}
+
     }
 }

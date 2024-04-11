@@ -16,6 +16,8 @@ var connectionString = builder.Configuration.GetConnectionString("AuroraConnecti
 builder.Services.AddDbContext<AuroraContext>(options =>
     options.UseSqlServer(connectionString));
 
+//builder.Services.AddDefaultIdentity<Customers>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AuroraContext>();
+
 builder.Services.AddControllersWithViews();
 
 // Add authentication services
@@ -33,7 +35,8 @@ services.AddDbContext<AuroraContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AuroraConnection"));
 });
 
-services.AddDefaultIdentity<IdentityUser>(options =>
+
+services.AddDefaultIdentity<Customers>(options =>
 {
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
     options.Lockout.MaxFailedAccessAttempts = 5;

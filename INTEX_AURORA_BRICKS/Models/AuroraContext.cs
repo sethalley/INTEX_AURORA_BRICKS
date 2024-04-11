@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace INTEX_AURORA_BRICKS.Models
 {
-    public class AuroraContext : IdentityDbContext
+    public class AuroraContext : IdentityDbContext<Customers>
     {
         public AuroraContext(DbContextOptions<AuroraContext> options) : base(options)
         {
@@ -14,33 +14,29 @@ namespace INTEX_AURORA_BRICKS.Models
         public DbSet<ItemBasedRecommendations> ItemBasedRecommendations { get; set; }
 
         public DbSet<Cart> Cart { get; set; }
+        public DbSet<Customers> Customers { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Name=AuroraConnection", options =>
+            {
+                options.EnableRetryOnFailure();
+            });
+        }
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Calling parent class (super) to configure Identity tables.
+            base.OnModelCreating(modelBuilder);
+        }
+
+
+
+
+
+
+
+
     }
-
-
-    //public class OrderContext : DbContext
-    //{
-    //    public OrderContext(DbContextOptions<OrderContext> options) : base(options)
-    //    {
-    //    }
-
-    //    public DbSet<Order> Orders { get; set; }
-    //}
-
-    //public class CustomerContext : DbContext
-    //{
-    //    public CustomerContext(DbContextOptions<CustomerContext> options) : base(options)
-    //    {
-    //    }
-
-    //    public DbSet<Customer> Customers { get; set; }
-    //}
-
-    //public class LineItemContext : DbContext
-    //{
-    //    public LineItemContext(DbContextOptions<LineItemContext> options) : base(options)
-    //    {
-    //    }
-
-    //    public DbSet<LineItem> LineItems { get; set; }
-    //}
 }

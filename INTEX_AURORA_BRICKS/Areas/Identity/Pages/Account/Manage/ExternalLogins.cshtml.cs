@@ -4,9 +4,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using INTEX_AURORA_BRICKS.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +18,14 @@ namespace INTEX_AURORA_BRICKS.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly IUserStore<IdentityUser> _userStore;
+        private readonly UserManager<Customers> _userManager;
+        private readonly SignInManager<Customers> _signInManager;
+        private readonly IUserStore<Customers> _userStore;
 
         public ExternalLoginsModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            IUserStore<IdentityUser> userStore)
+            UserManager<Customers> userManager,
+            SignInManager<Customers> signInManager,
+            IUserStore<Customers> userStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -55,6 +57,33 @@ namespace INTEX_AURORA_BRICKS.Areas.Identity.Pages.Account.Manage
         [TempData]
         public string StatusMessage { get; set; }
 
+
+#nullable enable
+        [Required]
+        [Display(Name = "First Name")]
+        public string first_name { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string last_name { get; set; }
+
+        [Display(Name = "Birth Date")]
+        public DateTime? birth_date { get; set; }
+
+        [Display(Name = "Country")]
+        public string country_of_residence { get; set; }
+
+        [StringLength(1)]
+        [Display(Name = "Gender")]
+        public string gender { get; set; }
+
+        [Display(Name = "Age")]
+        public int? age { get; set; }
+
+        [Display(Name = "Reecommendation Id")]
+        public int? recId { get; set; }
+#nullable disable
+
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -69,7 +98,7 @@ namespace INTEX_AURORA_BRICKS.Areas.Identity.Pages.Account.Manage
                 .ToList();
 
             string passwordHash = null;
-            if (_userStore is IUserPasswordStore<IdentityUser> userPasswordStore)
+            if (_userStore is IUserPasswordStore<Customers> userPasswordStore)
             {
                 passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
             }
@@ -137,5 +166,6 @@ namespace INTEX_AURORA_BRICKS.Areas.Identity.Pages.Account.Manage
             StatusMessage = "The external login was added.";
             return RedirectToPage();
         }
+
     }
 }

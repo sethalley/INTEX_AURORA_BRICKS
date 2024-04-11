@@ -27,6 +27,49 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.first_name" class="form-control" autocomplete="given-name" aria-required="true" placeholder="First Name" />
+                <label asp-for="Input.first_name">First Name</label>
+                <span asp-validation-for="Input.first_name" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.last_name" class="form-control" autocomplete="family-name" aria-required="true" placeholder="Last Name" />
+                <label asp-for="Input.last_name">Last Name</label>
+                <span asp-validation-for="Input.last_name" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.birth_date" class="form-control" autocomplete="bday" aria-required="false" placeholder="Birth Date" />
+                <label asp-for="Input.birth_date">Birth Date</label>
+                <span asp-validation-for="Input.birth_date" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.country_of_residence" class="form-control" autocomplete="country" aria-required="true" placeholder="Country" />
+                <label asp-for="Input.country_of_residence">Country</label>
+                <span asp-validation-for="Input.country_of_residence" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.gender" class="form-control" autocomplete="sex" aria-required="false" placeholder="Gender" />
+                <label asp-for="Input.gender">Gender</label>
+                <span asp-validation-for="Input.gender" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.age" class="form-control" autocomplete="age" aria-required="false" placeholder="Age" />
+                <label asp-for="Input.age">Age</label>
+                <span asp-validation-for="Input.age" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.recId" class="form-control" autocomplete="reccomendation" aria-required="false" placeholder="Reccomendation Id" />
+                <label asp-for="Input.recId">Reccomendation Id</label>
+                <span asp-validation-for="Input.recId" class="text-danger"></span>
+            </div>
+
+
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
