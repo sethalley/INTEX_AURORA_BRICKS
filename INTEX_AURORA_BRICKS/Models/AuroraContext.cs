@@ -22,8 +22,15 @@ namespace INTEX_AURORA_BRICKS.Models
         public DbSet<OrderPredictions> OrderPredictions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<OrderPredictions>().HasNoKey();
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<OrderPredictions>()
+                .HasOne(op => op.Orders)
+                .WithMany()
+                .HasForeignKey(op => op.TransactionId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
+
     }
 
 

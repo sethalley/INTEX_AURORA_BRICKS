@@ -29,12 +29,12 @@ namespace INTEX_II.Controllers
         }
 
 
-        //public IActionResult Index()
-        //{
-        //    IQueryable<Products> productsQuery = _auroraContext.Products;
+        public IActionResult Index()
+        {
+            IQueryable<Products> productsQuery = _auroraContext.Products;
 
-            // Retrieve products for the specific page
-            var products = productsQuery
+        // Retrieve products for the specific page
+        var products = productsQuery
                                 .OrderBy(p => p.product_ID) // Replace Product_ID with your actual primary key or sorting preference
                                 .ToList();
 
@@ -351,37 +351,37 @@ namespace INTEX_II.Controllers
                     (float)(record.Amount ?? 0),
 
                     //dummy code
-                    record.DayOfWeek == "Mon" ? 1: 0,
-                    record.DayOfWeek == "Sat" ? 1: 0,
-                    record.DayOfWeek == "Sun" ? 1: 0,
-                    record.DayOfWeek == "Thu" ? 1: 0,
-                    record.DayOfWeek == "Tue" ? 1: 0,
-                    record.DayOfWeek == "Wed" ? 1: 0,
+                    //record.DayOfWeek == "Mon" ? 1: 0,
+                    //record.DayOfWeek == "Sat" ? 1: 0,
+                    //record.DayOfWeek == "Sun" ? 1: 0,
+                    //record.DayOfWeek == "Thu" ? 1: 0,
+                    //record.DayOfWeek == "Tue" ? 1: 0,
+                    //record.DayOfWeek == "Wed" ? 1: 0,
 
-                    record.EntryMode == "PIN" ? 1: 0,
-                    record.EntryMode == "Tap" ? 1: 0,
+                    //record.EntryMode == "PIN" ? 1: 0,
+                    //record.EntryMode == "Tap" ? 1: 0,
 
-                    record.TypeOfTransaction == "Online" ? 1: 0,
-                    record.TypeOfTransaction == "POS" ? 1: 0,
+                    //record.TypeOfTransaction == "Online" ? 1: 0,
+                    //record.TypeOfTransaction == "POS" ? 1: 0,
 
-                    record.CountryOfTransaction == "India" ? 1: 0,
-                    record.CountryOfTransaction == "Russia" ? 1: 0,
-                    record.CountryOfTransaction == "USA" ? 1: 0,
-                    record.CountryOfTransaction == "UnitedKingdom" ? 1: 0,
+                    //record.CountryOfTransaction == "India" ? 1: 0,
+                    //record.CountryOfTransaction == "Russia" ? 1: 0,
+                    //record.CountryOfTransaction == "USA" ? 1: 0,
+                    record.CountryOfTransaction == "United Kingdom" ? 1: 0,
 
-                    (record.ShippingAddress ?? record.CountryOfTransaction) == "India" ? 1: 0,
-                    (record.ShippingAddress ?? record.CountryOfTransaction) == "Russia" ? 1: 0,
-                    (record.ShippingAddress ?? record.CountryOfTransaction) == "USA" ? 1: 0,
-                    (record.ShippingAddress ?? record.CountryOfTransaction ) == "UnitedKingdom" ? 1:0,
+                    //(record.ShippingAddress ?? record.CountryOfTransaction) == "India" ? 1: 0,
+                    //(record.ShippingAddress ?? record.CountryOfTransaction) == "Russia" ? 1: 0,
+                    //(record.ShippingAddress ?? record.CountryOfTransaction) == "USA" ? 1: 0,
+                    (record.ShippingAddress ?? record.CountryOfTransaction ) == "United Kingdom" ? 1:0,
 
-                    record.Bank == "HSBC" ? 1: 0,
-                    record.Bank == "Halifax" ? 1: 0,
-                    record.Bank == "Lloyds" ? 1: 0,
-                    record.Bank == "Metro" ? 1: 0,
-                    record.Bank == "Monzo" ? 1: 0,
-                    record.Bank == "RBS" ? 1: 0,
+                    //record.Bank == "HSBC" ? 1: 0,
+                    //record.Bank == "Halifax" ? 1: 0,
+                    //record.Bank == "Lloyds" ? 1: 0,
+                    //record.Bank == "Metro" ? 1: 0,
+                    //record.Bank == "Monzo" ? 1: 0,
+                    //record.Bank == "RBS" ? 1: 0,
 
-                    record.TypeOfCard == "Visa" ? 1: 0
+                    //record.TypeOfCard == "Visa" ? 1: 0
 
                 };
 
