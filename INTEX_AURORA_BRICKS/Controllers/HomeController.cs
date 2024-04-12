@@ -410,6 +410,16 @@ namespace INTEX_II.Controllers
         {
             return View();
         }
+
+        public IActionResult OrderManagement()
+        {
+            List<Order> orders = _auroraContext.Orders
+                                            .OrderByDescending(o => o.CustomerId) // Assuming CreatedAt is a property indicating the creation date
+                                            .Take(30)
+                                            .ToList(); // Fetch the last 30 orders from the database and materialize into a list
+            return View(orders); // Pass the list of orders to the view
+        }
+
     }
 
 }
