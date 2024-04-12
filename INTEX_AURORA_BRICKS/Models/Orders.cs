@@ -9,9 +9,9 @@ namespace INTEX_AURORA_BRICKS.Models
         public int TransactionId { get; set; }
 
         [ForeignKey("Customer")]
-        public int CustomerId { get; set; }
+        public short CustomerId { get; set; }
 
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
 
         [Display(Name = "Day of Week")]
         public string? DayOfWeek { get; set; }

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Drawing.Printing;
+using Microsoft.ML.OnnxRuntime;
+using Microsoft.ML.OnnxRuntime.Tensors;
 
 namespace INTEX_II.Controllers
 {
@@ -14,12 +16,15 @@ namespace INTEX_II.Controllers
         private readonly AuroraContext _auroraContext;
         private readonly SignInManager<Customers> _signInManager;
         private readonly UserManager<Customers> _userManager;
+        private readonly InferenceSession _session;
 
-        public HomeController(AuroraContext auroraContext, SignInManager<Customers> signInManager, UserManager<Customers> userManager)
+        public HomeController(AuroraContext auroraContext, SignInManager<Customers> signInManager, UserManager<Customers> userManager, InferenceSession session)
         {
             _auroraContext = auroraContext;
             _signInManager = signInManager;
             _userManager = userManager;
+            _session = session;
+
         }
 
 
@@ -356,6 +361,117 @@ namespace INTEX_II.Controllers
             return RedirectToAction("CrudProductAdmin");
         }
 
+        [HttpPost]
+        public IActionResult ReviewOrders(Order neworder)
+        {
+            //ask about functionality of this
+            //var record = new CustomerOrder()
+            //{
+            //    Order = Order,
+            //    Customers = _auroraContext.Customers
+            //    .Where(x => x.CustomerId = Order.CustomerId)
+            //    .FirstOrDefault()
+            //};
+
+            //var records = _auroraContext.Orders
+            //    .OrderByDescending(o => o.Date)
+            //    .Take(20)
+            //    .ToList();
+            //var predictions = new List<OrderPredictions>();
+
+            //var class_type_dict = new Dictionary<int, string>
+            //{
+            //    {0, "Not Fraud" },
+            //    {1, "Fraud" }
+            //};
+
+            float day = neworder.Date.Day;
+            float month = neworder.Date.Month;
+            
+                //maybe do stuff with day and month again if it says it needs it
+
+                var input = new List<float>
+                {
+                    (float)neworder.CustomerId,
+                    (float)neworder.Time,
+                    (float)(neworder.Amount ?? 0),
+
+                    //day and month stuff
+                    day,
+                    month,
+
+                    //dummy coding
+                    neworder.DayOfWeek == "Mon" ? 1: 0,
+                    neworder.DayOfWeek == "Sat" ? 1: 0,
+                    neworder.DayOfWeek == "Sun" ? 1: 0,
+                    neworder.DayOfWeek == "Thu" ? 1: 0,
+                    neworder.DayOfWeek == "Tue" ? 1: 0,
+                    neworder.DayOfWeek == "Wed" ? 1: 0,
+
+                    neworder.EntryMode == "PIN" ? 1: 0,
+                    neworder.EntryMode == "Tap" ? 1: 0,
+
+                    neworder.TypeOfTransaction == "Online" ? 1: 0,
+                    neworder.TypeOfTransaction == "POS" ? 1: 0,
+
+                    neworder.CountryOfTransaction == "India" ? 1: 0,
+                    neworder.CountryOfTransaction == "Russia" ? 1: 0,
+                    neworder.CountryOfTransaction == "USA" ? 1: 0,
+                    neworder.CountryOfTransaction == "United Kingdom" ? 1: 0,
+
+                    (neworder.ShippingAddress ?? neworder.CountryOfTransaction) == "India" ? 1: 0,
+                    (neworder.ShippingAddress ?? neworder.CountryOfTransaction) == "Russia" ? 1: 0,
+                    (neworder.ShippingAddress ?? neworder.CountryOfTransaction) == "USA" ? 1: 0,
+                    (neworder.ShippingAddress ?? neworder.CountryOfTransaction ) == "United Kingdom" ? 1:0,
+
+                    neworder.Bank == "HSBC" ? 1: 0,
+                    neworder.Bank == "Halifax" ? 1: 0,
+                    neworder.Bank == "Lloyds" ? 1: 0,
+                    neworder.Bank == "Metro" ? 1: 0,
+                    neworder.Bank == "Monzo" ? 1: 0,
+                    neworder.Bank == "RBS" ? 1: 0,
+
+                    neworder.TypeOfCard == "Visa" ? 1: 0
+
+
+                };
+
+                var inputTensor = new DenseTensor<float>(input.ToArray(), new[] { 1, input.Count });
+
+                var inputs = new List<NamedOnnxValue>
+                {
+                    NamedOnnxValue.CreateFromTensor("float_type", inputTensor)
+                };
+
+                var Fraud = new int(); 
+                
+                using (var results = _session.Run(inputs))
+                {
+                    var prediction = results.FirstOrDefault(item => item.Name == "output_label")?.AsTensor<long>().ToArray();
+                    Fraud = (int)prediction[0];
+                    //???
+                }
+
+                if (Fraud == 0)
+                {
+                    //order.Fraud = Fraud;
+                    //_brickRepository.AddOrder(order);
+                    return View("ConfirmedOrder");//confirmation view
+                }
+                else
+                {
+                    //_brickRepository.AddOrder(order);
+                    return View("FlaggedOrder"); //review order
+                }
+                
+            
+
+            //return View(predictions);
+
+
+
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -370,8 +486,9 @@ namespace INTEX_II.Controllers
         {
             return View();
         }
-    }
 
+    }
+        
 }
 
 
