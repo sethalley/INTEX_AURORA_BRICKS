@@ -13,15 +13,17 @@ namespace INTEX_II.Controllers
     {
         private readonly AuroraContext _auroraContext;
         private readonly SignInManager<Customers> _signInManager;
+        private readonly UserManager<Customers> _userManager;
 
-        public HomeController(AuroraContext auroraContext, SignInManager<Customers> signInManager)
+        public HomeController(AuroraContext auroraContext, SignInManager<Customers> signInManager, UserManager<Customers> userManager)
         {
             _auroraContext = auroraContext;
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             IQueryable<Products> productsQuery = _auroraContext.Products;
 
@@ -32,14 +34,21 @@ namespace INTEX_II.Controllers
 
             var userRecommendations = _auroraContext.UserRecommendations.ToList(); // Retrieve all user recommendations
 
+            var currentUser = await _userManager.GetUserAsync(User);
+            var recId = currentUser != null ? currentUser.recId : 1;
+
             var viewModel = new IndexViewModel
             {
                 Products = products,
-                UserRecommendations = userRecommendations
+                UserRecommendations = userRecommendations,
+                RecId = recId
             };
+
+
 
             return View(viewModel);
         }
+
 
 
 
