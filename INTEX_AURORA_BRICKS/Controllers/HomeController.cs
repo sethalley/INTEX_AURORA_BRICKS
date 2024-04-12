@@ -362,29 +362,25 @@ namespace INTEX_II.Controllers
         }
 
         [HttpPost]
-        public IActionResult ReviewOrders(Order neworder)
+        public async Task<IActionResult> ReviewOrders(Order neworder)
         {
 
-            //ask about functionality of this
-            //var record = new CustomerOrder()
-            //{
-            //    Order = Order,
-            //    Customers = _auroraContext.Customers
-            //    .Where(x => x.CustomerId = Order.CustomerId)
-            //    .FirstOrDefault()
-            //};
+            var currentUser = await _userManager.GetUserAsync(User);
 
-            //var records = _auroraContext.Orders
-            //    .OrderByDescending(o => o.Date)
-            //    .Take(20)
-            //    .ToList();
-            //var predictions = new List<OrderPredictions>();
-
-            //var class_type_dict = new Dictionary<int, string>
-            //{
-            //    {0, "Not Fraud" },
-            //    {1, "Fraud" }
-            //};
+            //if's check if user is both signed in and if they have a recId meaning they are one of the users that has ordered before
+            if (currentUser != null)
+            { 
+                if (currentUser.recId != null)
+                {
+                    neworder.CustomerId = (short)currentUser.recId;
+                }
+                else
+                {
+                    // this has been determined to be out of scope. In a later version we will prepare new user personal order Id's
+                    neworder.CustomerId = 100;
+                }
+                
+            }
 
             float day = neworder.Date.Day;
             float month = neworder.Date.Month;
