@@ -3,8 +3,8 @@
 }
 @model INTEX_AURORA_BRICKS.Models.IndexViewModel
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<Customers> SignInManager
+@inject UserManager<Customers> UserManager
 @using System.Security.Claims
 
 <br />
@@ -156,13 +156,8 @@
     {
         <h1>Selected for you...</h1>
         <br />
-        <p>User ID: @userIdClaim.Value</p>
-        Random random = new Random();
-        int randomNumber = random.Next(1, 11);
-        <p>Customer ID (Randomly generated): @randomNumber</p>
-        <br />
 
-        var recommendation = Model.UserRecommendations.FirstOrDefault(r => r.customer_ID == randomNumber);
+        var recommendation = Model.UserRecommendations.FirstOrDefault(r => r.customer_ID == Model.RecId);
         List<int> tailored = new List<int>() { recommendation.Recommendation_1_ID, recommendation.Recommendation_2_ID, recommendation.Recommendation_3_ID, recommendation.Recommendation_4_ID, recommendation.Recommendation_5_ID };
         foreach (var product in Model.Products)
         {

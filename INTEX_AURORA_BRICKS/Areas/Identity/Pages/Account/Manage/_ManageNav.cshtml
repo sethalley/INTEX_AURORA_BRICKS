@@ -1,4 +1,7 @@
-@inject SignInManager<IdentityUser> SignInManager
+@using INTEX_AURORA_BRICKS.Models
+
+@inject SignInManager<Customers> SignInManager
+
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

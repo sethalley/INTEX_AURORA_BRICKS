@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using INTEX_AURORA_BRICKS.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,17 +24,17 @@ namespace INTEX_AURORA_BRICKS.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<Customers> _signInManager;
+        private readonly UserManager<Customers> _userManager;
+        private readonly IUserStore<Customers> _userStore;
+        private readonly IUserEmailStore<Customers> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<Customers> userManager,
+            IUserStore<Customers> userStore,
+            SignInManager<Customers> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -97,6 +98,34 @@ namespace INTEX_AURORA_BRICKS.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+#nullable enable
+            [Required]
+            [Display(Name = "First Name")]
+            public string first_name { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            public string last_name { get; set; }
+
+            [Display(Name = "Birth Date")]
+            public DateTime? birth_date { get; set; }
+
+            [Display(Name = "Country")]
+            public string country_of_residence { get; set; }
+
+            [StringLength(1)]
+            [Display(Name = "Gender")]
+            public string gender { get; set; }
+
+            [Display(Name = "Age")]
+            public int? age { get; set; }
+
+            [Display(Name = "Reecommendation Id")]
+            public int? recId { get; set; }
+#nullable disable
+
+
         }
 
 
@@ -116,19 +145,21 @@ namespace INTEX_AURORA_BRICKS.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.first_name = Input.first_name;
+                user.last_name = Input.last_name;
+                user.birth_date = Input.birth_date?.Date ?? default;
+                user.country_of_residence = Input.country_of_residence;
+                user.gender = Input.gender;
+                user.recId = Input.recId;
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+
+
+
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
-                    if (user.NormalizedUserName.StartsWith("ADMIN"))
-                    {
-                        await _userManager.AddToRoleAsync(user, "Admin");
-                    }
-
-                    await _userManager.AddToRoleAsync(user, "Customer");
-
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -141,6 +172,13 @@ namespace INTEX_AURORA_BRICKS.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    if (user.NormalizedUserName.StartsWith("ADMIN"))
+                    {
+                        await _userManager.AddToRoleAsync(user, "Admin");
+                    }
+
+                    await _userManager.AddToRoleAsync(user, "Customer");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -162,27 +200,27 @@ namespace INTEX_AURORA_BRICKS.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private Customers CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<Customers>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(Customers)}'. " +
+                    $"Ensure that '{nameof(Customers)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<Customers> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<Customers>)_userStore;
         }
     }
 }

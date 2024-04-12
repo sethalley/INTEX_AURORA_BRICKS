@@ -4,6 +4,7 @@
     {
         public List<Products> Products { get; set; }
         public List<UserRecommendations> UserRecommendations { get; set; }
+        public int? RecId { get; internal set; }
     }
 
 }
