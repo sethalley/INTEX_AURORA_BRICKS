@@ -99,7 +99,7 @@
             <form method="post" action="@Url.Action("ReviewOrders", "Home")">
                 <!-- Mock payment form fields -->
                 <label for="entryMode">Entry Mode:</label>
-                <select id="entryMode" name="EntryMode">
+                <select id="entryMode" name="EntryMode" required>
                     <option value="" disabled selected>Select</option>
                     <option value="PIN">PIN</option>
                     <option value="TAP">TAP</option>
@@ -107,7 +107,7 @@
                 </select>
 
                 <label for="countryOfTransaction">Country of Transaction:</label>
-                <select id="countryOfTransaction" name="CountryOfTransaction">
+                <select id="countryOfTransaction" name="CountryOfTransaction" required>
                     <option value="" disabled selected>Select</option>
                     <option value="India">India</option>
                     <option value="Russia">Russia</option>
@@ -117,7 +117,7 @@
                 </select>
 
                 <label for="shippingAddress">Shipping Address:</label>
-                <select id="shippingAddress" name="ShippingAddress">
+                <select id="shippingAddress" name="ShippingAddress" required>
                     <option value="" disabled selected>Select</option>
                     <option value="India">India</option>
                     <option value="Russia">Russia</option>
@@ -127,7 +127,7 @@
                 </select>
 
                 <label for="bank">Bank:</label>
-                <select id="bank" name="Bank">
+                <select id="bank" name="Bank" required>
                     <option value="" disabled selected>Select</option>
                     <option value="HSBC">HSBC</option>
                     <option value="Halifax">Halifax</option>
@@ -139,7 +139,7 @@
                 </select>
 
                 <label for="typeOfCard">Type of Card:</label>
-                <select id="typeOfCard" name="TypeOfCard">
+                <select id="typeOfCard" name="TypeOfCard" required>
                     <option value="" disabled selected>Select</option>
                     <option value="Visa">Visa</option>
                     <option value="MasterCard">MasterCard</option>
@@ -148,7 +148,6 @@
                 <!-- Additional hidden fields -->
                 <input type="hidden" id="date" name="Date" value="@DateTime.Now" />
                 <input type="hidden" id="dayOfWeek" name="DayOfWeek" value="@DateTime.Now.DayOfWeek" />
-@*                 <input type="hidden" id="time" name="Time" value="1234" /> <!-- Replace with actual time value --> *@
                 <input type="hidden" id="amount" name="Amount" value="@Model.CalculateTotal()" /> <!-- Replace with actual amount value -->
                 <input type="hidden" id="typeOfTransaction" name="TypeOfTransaction" value="Online" />
 
