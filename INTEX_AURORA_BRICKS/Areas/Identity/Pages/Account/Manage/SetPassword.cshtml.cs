@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using INTEX_AURORA_BRICKS.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,12 +14,12 @@ namespace INTEX_AURORA_BRICKS.Areas.Identity.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<Customers> _userManager;
+        private readonly SignInManager<Customers> _signInManager;
 
         public SetPasswordModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<Customers> userManager,
+            SignInManager<Customers> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

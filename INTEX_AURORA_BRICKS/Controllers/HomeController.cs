@@ -1,6 +1,7 @@
 using INTEX_AURORA_BRICKS.Infrastructure;
 using INTEX_AURORA_BRICKS.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -11,14 +12,18 @@ namespace INTEX_II.Controllers
     public class HomeController : Controller
     {
         private readonly AuroraContext _auroraContext;
+        private readonly SignInManager<Customers> _signInManager;
+        private readonly UserManager<Customers> _userManager;
 
-        public HomeController(AuroraContext auroraContext)
+        public HomeController(AuroraContext auroraContext, SignInManager<Customers> signInManager, UserManager<Customers> userManager)
         {
             _auroraContext = auroraContext;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             IQueryable<Products> productsQuery = _auroraContext.Products;
 
@@ -29,14 +34,23 @@ namespace INTEX_II.Controllers
 
             var userRecommendations = _auroraContext.UserRecommendations.ToList(); // Retrieve all user recommendations
 
+            var currentUser = await _userManager.GetUserAsync(User);
+            var recId = currentUser != null ? currentUser.recId : 1;
+
             var viewModel = new IndexViewModel
             {
                 Products = products,
-                UserRecommendations = userRecommendations
+                UserRecommendations = userRecommendations,
+                RecId = recId
             };
+
+
 
             return View(viewModel);
         }
+
+
+
 
 
         public IActionResult About()
@@ -207,6 +221,39 @@ namespace INTEX_II.Controllers
             // Redirect back to the Products action with the new pageSize
             return RedirectToAction("Products", new { pageSize });
         }
+
+
+        //public async Task<IActionResult> Customers()
+        //{
+        //    var userClaim = HttpContext.User;
+        //    if (userClaim != null)
+        //    {
+        //        var user = await _signInManager.UserManager.GetUserAsync(userClaim);
+
+        //        if (user != null)
+        //        {
+        //            return View(new Customers { UserId = user.Id });
+        //        }
+
+        //    }
+
+        //var userClaim2 = HttpContext.User;
+        //if (userClaim2 != null)
+        //{
+        //    var user2 = await _signInManager.UserManager.GetUserAsync(userClaim2);
+
+        //    if (user2 != null)
+        //    {
+        //        var customer = _auroraContext.Customers.Where(x => x.UserId == user2.Id).FirstOrDefault();
+        //        // Recommend(customer.CustomerId)
+        //    }
+
+        //    }
+
+        //}
+
+    
+
 
 
         public async Task<IActionResult> Details(byte id)
