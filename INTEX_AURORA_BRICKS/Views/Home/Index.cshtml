@@ -159,29 +159,34 @@
 
         var recommendation = Model.UserRecommendations.FirstOrDefault(r => r.customer_ID == Model.RecId);
         List<int> tailored = new List<int>() { recommendation.Recommendation_1_ID, recommendation.Recommendation_2_ID, recommendation.Recommendation_3_ID, recommendation.Recommendation_4_ID, recommendation.Recommendation_5_ID };
-        foreach (var product in Model.Products)
-        {
-            if (tailored.Contains(product.product_ID))
-            {
-                <div class="col-lg-4">
-                    <div class="event-item">
-                        <div class="thumb">
-                            <a href=" @Url.Action("Details", "Home", new { id = product.product_ID })"><img src="@product.img_link" alt=""></a>
+        <div>
+            <div class="row horizontal-scroll">
+                @foreach (var product in Model.Products)
+                {
+                    if (tailored.Contains(product.product_ID))
+                    {
+                        <div class="col-lg-4">
+                            <div class="event-item">
+                                <div class="thumb">
+                                    <a href="@Url.Action("Details", "Home", new { id = product.product_ID })"><img src="@product.img_link" alt=""></a>
+                                </div>
+                                <div class="down-content">
+                                    <a href="event-details.html"><h4>@product.name</h4></a>
+                                    <ul>
+                                        <li>Piece Count: @product.num_parts</li>
+                                        <li>Color: @product.primary_color</li>
+                                        <li><a href="@Url.Action("Details", "Home", new { id = product.product_ID })">View Item</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="down-content">
-                            <a href="event-details.html"><h4>@product.name</h4></a>
-                            <ul>
-                                <li>Piece Count: @product.num_parts</li>
-                                <li>Color: @product.primary_color</li>
-                                <li><a href=" @Url.Action("Details", "Home", new { id = product.product_ID })">View Item</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
+                    }
+                }
+            </div>
+        </div>
     }
 }
+
 else
 {
     <h1>Most popular...</h1>
@@ -189,7 +194,6 @@ else
     <div class="container">
         <!-- Add a new class 'horizontal-scroll' to the row -->
         <div class="row horizontal-scroll">
-
             @{
                 List<int> best = new List<int>() { 27, 33, 34, 37 };
                 if (Model != null)
@@ -224,6 +228,7 @@ else
             }
         </div>
     </div>
+
 }
 
 
@@ -239,6 +244,5 @@ else
         flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
     }
 
+
 </style>
-
-
