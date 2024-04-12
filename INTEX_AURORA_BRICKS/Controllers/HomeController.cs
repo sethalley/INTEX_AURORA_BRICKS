@@ -388,18 +388,22 @@ namespace INTEX_II.Controllers
 
             float day = neworder.Date.Day;
             float month = neworder.Date.Month;
-            
-                //maybe do stuff with day and month again if it says it needs it
+            DateTime now = DateTime.Now;
+            float time = now.Hour;
 
-                var input = new List<float>
+
+            //maybe do stuff with day and month again if it says it needs it
+            neworder.TypeOfTransaction = "Online";
+
+            var input = new List<float>
                 {
                     (float)neworder.CustomerId,
-                    (float)neworder.Time,
                     (float)(neworder.Amount ?? 0),
 
                     //day and month stuff
                     day,
                     month,
+                    time,
 
                     //dummy coding
                     neworder.DayOfWeek == "Mon" ? 1: 0,
@@ -411,6 +415,7 @@ namespace INTEX_II.Controllers
 
                     neworder.EntryMode == "PIN" ? 1: 0,
                     neworder.EntryMode == "Tap" ? 1: 0,
+
 
                     neworder.TypeOfTransaction == "Online" ? 1: 0,
                     neworder.TypeOfTransaction == "POS" ? 1: 0,

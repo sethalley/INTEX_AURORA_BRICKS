@@ -130,7 +130,7 @@ app.Use(async (context, next) =>
         "default-src 'self'; " +
         "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-        "script-src 'self' 'unsafe-inline' https://ajax.googleapis.com https://cdnjs.cloudflare.com https://cdn-cookieyes.com; " +
+        "script-src 'self' 'unsafe-inline' https://ajax.googleapis.com https://cdnjs.cloudflare.com https://cdn-cookieyes.com https://code.jquery.com; " +
         "img-src https: data:;" +
         "frame-src 'none'; " +
         "base-uri 'self'; " +
