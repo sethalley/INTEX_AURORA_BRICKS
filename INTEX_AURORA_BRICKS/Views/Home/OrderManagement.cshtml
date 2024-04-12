@@ -1,0 +1,95 @@
+﻿@model List<INTEX_AURORA_BRICKS.Models.Order>
+<br />
+<br />
+<h1>Order Administration</h1>
+
+<br />
+<br />
+<table class="table" id="ProdCrud">
+    <thead>
+        <tr>
+            <th>TransactionId</th>
+            <th>CustomerId</th>
+            <th>Date</th>
+            <th>DayOfWeek</th>
+            <th>Time</th>
+            <th>Entry Mode</th>
+            <th>Amount</th>
+            <th>Type of transaction</th>
+            <th>Country of transaction</th>
+            <th>Shipping Address</th>
+            <th>Bank</th>
+            <th>Type of Card</th>
+            <th>Fraud</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.TransactionId</td>
+                <td>@order.CustomerId</td>
+                <td>@order.Date</td>
+                <td>@order.DayOfWeek</td>
+                <td>@order.Time</td>
+                <td>@order.EntryMode</td>
+                <td>@order.Amount</td>
+                <td>@order.TypeOfTransaction</td>
+                <td>@order.CountryOfTransaction</td>
+                <td>@order.ShippingAddress</td>
+                <td>@order.Bank</td>
+                <td>@order.TypeOfCard</td>
+                @if (order.Fraud == 1)
+                {
+                    <td style="color:red">@order.Fraud</td>
+                }
+                else
+                {
+                    <td style="color:blue">@order.Fraud</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    /* Table styling */
+    #ProdCrud {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        /* Table headers */
+        #ProdCrud th {
+            font-weight: bold;
+            background-color: #f0f0f0; /* Light gray background */
+            border: 1px solid #ccc; /* Border */
+            padding: 8px; /* Padding */
+        }
+
+        /* Table cells */
+        #ProdCrud td {
+            border: 1px solid #ccc; /* Border */
+            padding: 8px; /* Padding */
+            max-width: 200px; /* Adjust max width for cells */
+            overflow: hidden;
+            white-space: nowrap; /* Prevents wrapping */
+            text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
+        }
+
+        /* Alternating row colors */
+        #ProdCrud tbody tr:nth-child(odd) {
+            background-color: rgba(255, 0, 0, 0.1); /* Faded red */
+        }
+
+        #ProdCrud tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 0, 0.1); /* Faded yellow */
+        }
+
+        /* Set fixed height for table cells */
+        #ProdCrud tbody td {
+            height: 50px; /* Adjust height as needed */
+        }
+
+</style>
