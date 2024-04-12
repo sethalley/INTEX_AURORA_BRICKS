@@ -34,8 +34,49 @@ namespace INTEX_II.Controllers
 
             var userRecommendations = _auroraContext.UserRecommendations.ToList(); // Retrieve all user recommendations
 
+            // Define variable
+            int recId;
+
+            // Assuming currentUser is the currently logged-in user
             var currentUser = await _userManager.GetUserAsync(User);
-            var recId = currentUser != null ? currentUser.recId : 1;
+
+            // Check if currentUser is not null
+            if (currentUser != null)
+            {
+                // Check if the user's RecId is not null
+                if (currentUser.recId != null)
+                {
+                    recId = (int)currentUser.recId;
+                }
+                else
+                {
+                    // Query the AspNetUsers table for the user with the closest age and same gender
+                    var closestUser = await _userManager.Users
+                        .Where(u => u.gender == currentUser.gender) // Same gender
+                        .OrderBy(u => EF.Functions.DateDiffDay(u.birth_date, currentUser.birth_date)) // Closest in age
+                        .FirstOrDefaultAsync();
+
+
+
+                    // If a closestUser is found, assign its RecId to RecId
+                    if (closestUser != null)
+                    {
+                        recId = (int)closestUser.recId;
+                    }
+                    else
+                    {
+                        // Handle case where no closest user is found
+                        // You may assign a default value or handle it based on your requirements
+                        recId = 6; // For example, assigning 6 as a default value
+                    }
+                }
+            }
+            else
+            {
+                // Handle case where currentUser is null
+                // You may assign a default value or handle it based on your requirements
+                recId = 1; // For example, assigning 1 as a default value
+            }
 
             var viewModel = new IndexViewModel
             {
@@ -44,10 +85,9 @@ namespace INTEX_II.Controllers
                 RecId = recId
             };
 
-
-
             return View(viewModel);
         }
+
 
 
 
@@ -373,5 +413,3 @@ namespace INTEX_II.Controllers
     }
 
 }
-
-
