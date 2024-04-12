@@ -15,31 +15,17 @@ namespace INTEX_AURORA_BRICKS.Models
 
         public DbSet<Cart> Cart { get; set; }
         public DbSet<Customers> Customers { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Name=AuroraConnection", options =>
-            {
-                options.EnableRetryOnFailure();
-            });
-        }
+       
 
         public DbSet<UserRecommendations> UserRecommendations { get; set; }
-    }
-
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Calling parent class (super) to configure Identity tables.
             base.OnModelCreating(modelBuilder);
         }
 
-
-
-
-
-
-
-
     }
+
+
 }
+
