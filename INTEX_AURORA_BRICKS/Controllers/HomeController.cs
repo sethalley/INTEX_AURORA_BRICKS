@@ -326,11 +326,13 @@ namespace INTEX_II.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        
+
         //[Authorize]
         public IActionResult ReviewOrders()
         {
             var records = _auroraContext.Orders
-                .OrderByDescending(o => o.Date)
+                .OrderByDescending(o => o.date)
                 .Take(20)
                 .ToList();//fetch 20 most recent records
             var predictions = new List<OrderPredictions>(); //model for the view
@@ -343,45 +345,52 @@ namespace INTEX_II.Controllers
 
             foreach (var record in records)
             {
+                int day = record.date.Day;
+                int month = record.date.Month;
+
                 //prepare features
                 var input = new List<float>
                 {
-                    (float)record.CustomerId,
-                    (float)record.Time,
-                    (float)(record.Amount ?? 0),
+                    //(float)record.transaction_ID,
+                    (float)record.customer_ID,
+                    (float)record.time,
+                    (float)(record.amount ?? 0),
+
+                    day,
+                    month,
 
                     //dummy code
-                    //record.DayOfWeek == "Mon" ? 1: 0,
-                    //record.DayOfWeek == "Sat" ? 1: 0,
-                    //record.DayOfWeek == "Sun" ? 1: 0,
-                    //record.DayOfWeek == "Thu" ? 1: 0,
-                    //record.DayOfWeek == "Tue" ? 1: 0,
-                    //record.DayOfWeek == "Wed" ? 1: 0,
+                    record.day_of_week == "Mon" ? 1: 0,
+                    record.day_of_week == "Sat" ? 1: 0,
+                    record.day_of_week == "Sun" ? 1: 0,
+                    record.day_of_week == "Thu" ? 1: 0,
+                    record.day_of_week == "Tue" ? 1: 0,
+                    record.day_of_week == "Wed" ? 1: 0,
 
-                    //record.EntryMode == "PIN" ? 1: 0,
-                    //record.EntryMode == "Tap" ? 1: 0,
+                    record.entry_mode == "PIN" ? 1: 0,
+                    record.entry_mode == "Tap" ? 1: 0,
 
-                    //record.TypeOfTransaction == "Online" ? 1: 0,
-                    //record.TypeOfTransaction == "POS" ? 1: 0,
+                    record.type_of_transaction == "Online" ? 1: 0,
+                    record.type_of_transaction == "POS" ? 1: 0,
 
-                    //record.CountryOfTransaction == "India" ? 1: 0,
-                    //record.CountryOfTransaction == "Russia" ? 1: 0,
-                    //record.CountryOfTransaction == "USA" ? 1: 0,
-                    record.CountryOfTransaction == "United Kingdom" ? 1: 0,
+                    record.country_of_transaction == "India" ? 1: 0,
+                    record.country_of_transaction == "Russia" ? 1: 0,
+                    record.country_of_transaction == "USA" ? 1: 0,
+                    record.country_of_transaction == "United Kingdom" ? 1: 0,
 
-                    //(record.ShippingAddress ?? record.CountryOfTransaction) == "India" ? 1: 0,
-                    //(record.ShippingAddress ?? record.CountryOfTransaction) == "Russia" ? 1: 0,
-                    //(record.ShippingAddress ?? record.CountryOfTransaction) == "USA" ? 1: 0,
-                    (record.ShippingAddress ?? record.CountryOfTransaction ) == "United Kingdom" ? 1:0,
+                    (record.shipping_address ?? record.country_of_transaction) == "India" ? 1: 0,
+                    (record.shipping_address ?? record.country_of_transaction) == "Russia" ? 1: 0,
+                    (record.shipping_address ?? record.country_of_transaction) == "USA" ? 1: 0,
+                    (record.shipping_address ?? record.country_of_transaction ) == "United Kingdom" ? 1:0,
 
-                    //record.Bank == "HSBC" ? 1: 0,
-                    //record.Bank == "Halifax" ? 1: 0,
-                    //record.Bank == "Lloyds" ? 1: 0,
-                    //record.Bank == "Metro" ? 1: 0,
-                    //record.Bank == "Monzo" ? 1: 0,
-                    //record.Bank == "RBS" ? 1: 0,
+                    record.bank == "HSBC" ? 1: 0,
+                    record.bank == "Halifax" ? 1: 0,
+                    record.bank == "Lloyds" ? 1: 0,
+                    record.bank == "Metro" ? 1: 0,
+                    record.bank == "Monzo" ? 1: 0,
+                    record.bank == "RBS" ? 1: 0,
 
-                    //record.TypeOfCard == "Visa" ? 1: 0
+                    record.type_of_card == "Visa" ? 1: 0
 
                 };
 
@@ -389,7 +398,7 @@ namespace INTEX_II.Controllers
 
                 var inputs = new List<NamedOnnxValue>
                 {
-                    NamedOnnxValue.CreateFromTensor("float_input", inputTensor)
+                    NamedOnnxValue.CreateFromTensor("float_type", inputTensor)
                 };
 
                 string predictionResult;
@@ -401,9 +410,19 @@ namespace INTEX_II.Controllers
                     predictionResult = prediction != null && prediction.Length > 0 ? class_type_dict.GetValueOrDefault((int)prediction[0], "Unknown") : "Error in prediction";
                 }
 
-                predictions.Add(new OrderPredictions { Orders = record, Prediction = predictionResult }); //adds the order information and prediction for that order
+                var orderPrediction = new OrderPredictions
+                {
+                    Orders = record,
+                    prediction = predictionResult
+                };
+
+                //_auroraContext.OrderPredictions.Add(orderPrediction); //adds the order information and prediction for that order
+                //_auroraContext.SaveChanges();
+
+                predictions.Add(orderPrediction);
 
             }
+
             return View(predictions);
 
         }

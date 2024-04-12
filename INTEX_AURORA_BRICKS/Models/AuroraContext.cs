@@ -20,16 +20,23 @@ namespace INTEX_AURORA_BRICKS.Models
         public DbSet<Order> Orders { get; set; }
         
         public DbSet<OrderPredictions> OrderPredictions { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<OrderPredictions>()
-                .HasOne(op => op.Orders)
-                .WithMany()
-                .HasForeignKey(op => op.TransactionId)
-                .OnDelete(DeleteBehavior.Cascade);
-        }
+        //    modelBuilder.Entity<OrderPredictions>()
+        //        .HasKey(op => op.transaction_ID); // TransactionId will be used as foreign key and part of composite key
+
+        //    modelBuilder.Entity<OrderPredictions>()
+        //        .Property(op => op.prediction)
+        //        .IsRequired();
+
+        //    modelBuilder.Entity<Order>()
+        //        .HasOne(o => o.orderPrediction) // Each Order has one OrderPrediction
+        //        .WithOne(op => op.Order)
+        //        .HasForeignKey<OrderPredictions>(op => op.TransactionId)
+        //        .IsRequired();
+        //}
 
     }
 

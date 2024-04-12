@@ -57,20 +57,20 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Orders.TransactionId</td>
-                    <td>@item.Orders.CustomerId</td>
-                    <td>@item.Orders.Date</td>
-                    <td>@item.Orders.DayOfWeek</td>
-                    <td>@item.Orders.Time</td>
-                    <td>@item.Orders.EntryMode</td>
-                    <td>@item.Orders.Amount</td>
-                    <td>@item.Orders.TypeOfTransaction</td>
-                    <td>@item.Orders.CountryOfTransaction</td>
-                    <td>@item.Orders.ShippingAddress</td>
-                    <td>@item.Orders.Bank</td>
-                    <td>@item.Orders.TypeOfCard</td>
-                    <td>@item.Orders.Fraud</td>
-                    <td class="prediction-cell">@item.Prediction</td>
+                    <td>@item.Orders.transaction_ID</td>
+                    <td>@item.Orders.customer_ID</td>
+                    <td>@item.Orders.date</td>
+                    <td>@item.Orders.day_of_week</td>
+                    <td>@item.Orders.time</td>
+                    <td>@item.Orders.entry_mode</td>
+                    <td>@item.Orders.amount</td>
+                    <td>@item.Orders.type_of_transaction</td>
+                    <td>@item.Orders.country_of_transaction</td>
+                    <td>@item.Orders.shipping_address</td>
+                    <td>@item.Orders.bank</td>
+                    <td>@item.Orders.type_of_card</td>
+                    <td>@item.Orders.fraud</td>
+                    <td class="prediction-cell">@item.prediction</td>
                 </tr>
             }
         </tbody>

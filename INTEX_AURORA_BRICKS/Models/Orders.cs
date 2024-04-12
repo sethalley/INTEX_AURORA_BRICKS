@@ -6,38 +6,38 @@ namespace INTEX_AURORA_BRICKS.Models
     public class Order
     {
         [Key]
-        public int TransactionId { get; set; }
+        public int transaction_ID { get; set; }
 
         [ForeignKey("Customer")]
-        public int CustomerId { get; set; }
+        public short customer_ID { get; set; }
 
-        public DateTime? Date { get; set; }
+        public DateTime date { get; set; }
 
         [Display(Name = "Day of Week")]
-        public string? DayOfWeek { get; set; }
+        public string? day_of_week { get; set; }
 
-        public int? Time { get; set; }
+        public int? time { get; set; }
 
         [Display(Name = "Entry Mode")]
-        public string? EntryMode { get; set; }
+        public string? entry_mode { get; set; }
 
-        public int? Amount { get; set; }
+        public int? amount { get; set; }
 
         [Display(Name = "Type of Transaction")]
-        public string? TypeOfTransaction { get; set; }
+        public string? type_of_transaction { get; set; }
 
         [Display(Name = "Country of Transaction")]
-        public string? CountryOfTransaction { get; set; }
+        public string? country_of_transaction { get; set; }
 
         [Display(Name = "Shipping Address")]
-        public string? ShippingAddress { get; set; }
+        public string? shipping_address { get; set; }
 
-        public string? Bank { get; set; }
+        public string? bank { get; set; }
 
         [Display(Name = "Type of Card")]
-        public string? TypeOfCard { get; set; }
+        public string? type_of_card { get; set; }
 
-        public bool? Fraud { get; set; }
+        public int? fraud { get; set; }
 
         // Navigation property
         public virtual Customer Customer { get; set; }

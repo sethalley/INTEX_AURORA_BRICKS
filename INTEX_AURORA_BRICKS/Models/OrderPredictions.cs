@@ -6,12 +6,13 @@ namespace INTEX_AURORA_BRICKS.Models
 {
     public class OrderPredictions
     {
-        [Key]
-        public int PredictionId { get; set; }
-        
-        [ForeignKey("Orders")]
-        public int TransactionId { get; set; }
+        //[Key]
+        //public int prediction_ID { get; set; }
+        //[Required]
+        //public int transaction_ID { get; set; }
+
+        //[ForeignKey("transaction_ID")]
         public Order Orders { get; set; }
-        public string Prediction { get; set; }
+        public string prediction { get; set; }
     }
 }
