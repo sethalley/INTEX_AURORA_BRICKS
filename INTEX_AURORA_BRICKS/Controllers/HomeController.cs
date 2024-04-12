@@ -319,7 +319,10 @@ namespace INTEX_II.Controllers
         {
             return View();
         }
-
+        public IActionResult FlaggedOrder()
+        {
+            return View();
+        }
     }
 
 }
