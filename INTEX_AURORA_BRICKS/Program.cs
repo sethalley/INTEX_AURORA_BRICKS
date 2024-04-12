@@ -6,7 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using System.Configuration;
 using System.Net;
+
 using Microsoft.ML.OnnxRuntime;
+
+using System;
+
 
 
 
@@ -48,6 +52,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 //    options.ExcludedHosts.Add("www.example.com");
 //});
 
+// HSTS
 builder.Services.AddHsts(options =>
 {
     options.Preload = true;
@@ -56,7 +61,7 @@ builder.Services.AddHsts(options =>
                                             // Optionally exclude specific hosts
                                             // options.ExcludedHosts.Add("example.com");
 });
-
+// HTTPS REDIRECTION
 builder.Services.AddHttpsRedirection(options =>
 {
     options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
@@ -83,6 +88,7 @@ services.AddDefaultIdentity<Customers>(options =>
     options.SignIn.RequireConfirmedEmail = false;
 }).AddRoles<IdentityRole>()
   .AddEntityFrameworkStores<AuroraContext>();
+
 // Used for cart sessions
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
@@ -130,16 +136,17 @@ app.Use(async (context, next) =>
         "default-src 'self'; " +
         "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-        "script-src 'self' 'unsafe-inline' https://ajax.googleapis.com https://cdnjs.cloudflare.com https://cdn-cookieyes.com https://code.jquery.com; " +
+        "script-src 'self' 'unsafe-inline' https://ajax.googleapis.com https://cdnjs.cloudflare.com https://cdn-cookieyes.com https://intex-4-7.azurewebsites.net; " +
         "img-src https: data:;" +
-        "frame-src 'none'; " +
+        "frame-src 'self' https://intex-4-7.azurewebsites.net; " +
         "base-uri 'self'; " +
-        "form-action 'self'; " +
+        "form - action 'self' https://intex-4-7.azurewebsites.net/*" + // Allow form submissions to this specific URL
         "upgrade-insecure-requests; " +
         "connect-src 'self' https://log.cookieyes.com https://cdn-cookieyes.com");
 
     await next();
 });
+
 
 
 
