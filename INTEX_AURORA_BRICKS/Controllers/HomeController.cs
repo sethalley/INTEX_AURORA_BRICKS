@@ -68,6 +68,8 @@ namespace INTEX_II.Controllers
             return View(cart);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddToCart(int productId)
         {
             var product = _auroraContext.Products.FirstOrDefault(p => p.product_ID == productId);

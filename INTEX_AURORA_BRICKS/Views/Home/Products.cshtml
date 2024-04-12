@@ -83,6 +83,7 @@
                                 <li>Year: @data.year</li>
                             </ul>
                             <form method="post" asp-action="AddToCart">
+                                @Html.AntiForgeryToken()
                                 <input type="hidden" name="productId" value="@data.product_ID" />
                                 <button type="submit" class="image-button">
                                     <img src="~/assets/images/cart.jpg" alt="Add to Cart" style="width:100px;" />

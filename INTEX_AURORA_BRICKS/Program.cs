@@ -79,6 +79,16 @@ services.AddDefaultIdentity<IdentityUser>(options =>
     options.SignIn.RequireConfirmedEmail = false;
 }).AddRoles<IdentityRole>()
   .AddEntityFrameworkStores<AuroraContext>();
+
+
+// CSRF - Security extra
+services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-CSRF-TOKEN"; // Optional: Customize the header name
+});
+
+
+
 // Used for cart sessions
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
