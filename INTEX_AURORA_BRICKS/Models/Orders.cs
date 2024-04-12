@@ -11,11 +11,13 @@ namespace INTEX_AURORA_BRICKS.Models
         public int TransactionId { get; set; }
 
         [ForeignKey("Customer")]
+
         [Column("customer_ID")] // Specify the column name
         public short CustomerId { get; set; }
 
         [Column("date")] // Specify the column name
         public DateTime? Date { get; set; }
+
 
         [Display(Name = "Day of Week")]
         [Column("day_of_week")] // Specify the column name

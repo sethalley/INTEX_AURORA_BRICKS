@@ -18,7 +18,7 @@ namespace INTEX_AURORA_BRICKS.Models
 
         public DbSet<Order> Orders { get; set; }
        
-
+        public DbSet<Order> Orders { get; set; }
         public DbSet<UserRecommendations> UserRecommendations { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

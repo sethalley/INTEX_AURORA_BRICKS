@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Drawing.Printing;
+using Microsoft.ML.OnnxRuntime;
+using Microsoft.ML.OnnxRuntime.Tensors;
 
 namespace INTEX_II.Controllers
 {
@@ -14,12 +16,15 @@ namespace INTEX_II.Controllers
         private readonly AuroraContext _auroraContext;
         private readonly SignInManager<Customers> _signInManager;
         private readonly UserManager<Customers> _userManager;
+        private readonly InferenceSession _session;
 
-        public HomeController(AuroraContext auroraContext, SignInManager<Customers> signInManager, UserManager<Customers> userManager)
+        public HomeController(AuroraContext auroraContext, SignInManager<Customers> signInManager, UserManager<Customers> userManager, InferenceSession session)
         {
             _auroraContext = auroraContext;
             _signInManager = signInManager;
             _userManager = userManager;
+            _session = session;
+
         }
 
 
@@ -394,6 +399,119 @@ namespace INTEX_II.Controllers
             _auroraContext.SaveChanges();
 
             return RedirectToAction("CrudProductAdmin");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReviewOrders(Order neworder)
+        {
+
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            //if's check if user is both signed in and if they have a recId meaning they are one of the users that has ordered before
+            if (currentUser != null)
+            { 
+                if (currentUser.recId != null)
+                {
+                    neworder.CustomerId = (short)currentUser.recId;
+                }
+                else
+                {
+                    // this has been determined to be out of scope. In a later version we will prepare new user personal order Id's
+                    neworder.CustomerId = 100;
+                }
+                
+            }
+
+            float day = neworder.Date.Day;
+            float month = neworder.Date.Month;
+            DateTime now = DateTime.Now;
+            float time = now.Hour;
+
+
+            //maybe do stuff with day and month again if it says it needs it
+            neworder.TypeOfTransaction = "Online";
+
+            var input = new List<float>
+                {
+                    (float)neworder.CustomerId,
+                    (float)(neworder.Amount ?? 0),
+
+                    //day and month stuff
+                    day,
+                    month,
+                    time,
+
+                    //dummy coding
+                    neworder.DayOfWeek == "Mon" ? 1: 0,
+                    neworder.DayOfWeek == "Sat" ? 1: 0,
+                    neworder.DayOfWeek == "Sun" ? 1: 0,
+                    neworder.DayOfWeek == "Thu" ? 1: 0,
+                    neworder.DayOfWeek == "Tue" ? 1: 0,
+                    neworder.DayOfWeek == "Wed" ? 1: 0,
+
+                    neworder.EntryMode == "PIN" ? 1: 0,
+                    neworder.EntryMode == "Tap" ? 1: 0,
+
+
+                    neworder.TypeOfTransaction == "Online" ? 1: 0,
+                    neworder.TypeOfTransaction == "POS" ? 1: 0,
+
+                    neworder.CountryOfTransaction == "India" ? 1: 0,
+                    neworder.CountryOfTransaction == "Russia" ? 1: 0,
+                    neworder.CountryOfTransaction == "USA" ? 1: 0,
+                    neworder.CountryOfTransaction == "United Kingdom" ? 1: 0,
+
+                    (neworder.ShippingAddress ?? neworder.CountryOfTransaction) == "India" ? 1: 0,
+                    (neworder.ShippingAddress ?? neworder.CountryOfTransaction) == "Russia" ? 1: 0,
+                    (neworder.ShippingAddress ?? neworder.CountryOfTransaction) == "USA" ? 1: 0,
+                    (neworder.ShippingAddress ?? neworder.CountryOfTransaction ) == "United Kingdom" ? 1:0,
+
+                    neworder.Bank == "HSBC" ? 1: 0,
+                    neworder.Bank == "Halifax" ? 1: 0,
+                    neworder.Bank == "Lloyds" ? 1: 0,
+                    neworder.Bank == "Metro" ? 1: 0,
+                    neworder.Bank == "Monzo" ? 1: 0,
+                    neworder.Bank == "RBS" ? 1: 0,
+
+                    neworder.TypeOfCard == "Visa" ? 1: 0
+
+
+                };
+
+                var inputTensor = new DenseTensor<float>(input.ToArray(), new[] { 1, input.Count });
+
+                var inputs = new List<NamedOnnxValue>
+                {
+                    NamedOnnxValue.CreateFromTensor("float_type", inputTensor)
+                };
+
+                var Fraud = new int(); 
+                
+                using (var results = _session.Run(inputs))
+                {
+                    var prediction = results.FirstOrDefault(item => item.Name == "output_label")?.AsTensor<long>().ToArray();
+                    Fraud = (int)prediction[0];
+                    //???
+                }
+
+                if (Fraud == 0)
+                {
+                    //order.Fraud = Fraud;
+                    //_brickRepository.AddOrder(order);
+                    return View("ConfirmedOrder");//confirmation view
+                }
+                else
+                {
+                    //_brickRepository.AddOrder(order);
+                    return View("FlaggedOrder"); //review order
+                }
+                
+            
+
+            //return View(predictions);
+
+
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

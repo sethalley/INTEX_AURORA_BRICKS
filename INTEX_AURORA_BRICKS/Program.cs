@@ -6,7 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using System.Configuration;
 using System.Net;
+
+using Microsoft.ML.OnnxRuntime;
+
 using System;
+
 
 
 
@@ -93,6 +97,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 services.AddDatabaseDeveloperPageExceptionFilter();
 services.AddControllersWithViews();
+
+services.AddSingleton<InferenceSession>(new InferenceSession("fraud_model.onnx"));
 
 var app = builder.Build();
 

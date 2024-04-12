@@ -96,23 +96,67 @@
         <!-- Payment Information Section -->
         <div class="payment-section">
             <h2>Payment Information</h2>
-            <form>
+            <form method="post" action="@Url.Action("ReviewOrders", "Home")">
                 <!-- Mock payment form fields -->
-                <label for="cardNumber">Card Number:</label>
-                <input type="text" id="cardNumber" name="cardNumber" />
+                <label for="entryMode">Entry Mode:</label>
+                <select id="entryMode" name="EntryMode" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="PIN">PIN</option>
+                    <option value="TAP">TAP</option>
+                    <option value="ATM">ATM</option>
+                </select>
 
-                <label for="expiryDate">Expiry Date:</label>
-                <input type="text" id="expiryDate" name="expiryDate" />
+                <label for="countryOfTransaction">Country of Transaction:</label>
+                <select id="countryOfTransaction" name="CountryOfTransaction" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="India">India</option>
+                    <option value="Russia">Russia</option>
+                    <option value="USA">USA</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="China">China</option>
+                </select>
 
-                <label for="cvv">CVV:</label>
-                <input type="text" id="cvv" name="cvv" />
-                <a href="@Url.Action("ConfirmedOrder", "Home")">order confirm page</a>
-                <a href="@Url.Action("FlaggedOrder", "Home")">flagged order page</a
+                <label for="shippingAddress">Shipping Address:</label>
+                <select id="shippingAddress" name="ShippingAddress" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="India">India</option>
+                    <option value="Russia">Russia</option>
+                    <option value="USA">USA</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="China">China</option>
+                </select>
+
+                <label for="bank">Bank:</label>
+                <select id="bank" name="Bank" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="HSBC">HSBC</option>
+                    <option value="Halifax">Halifax</option>
+                    <option value="Lloyds">Lloyds</option>
+                    <option value="Metro">Metro</option>
+                    <option value="Monzo">Monzo</option>
+                    <option value="RBS">RBS</option>
+                    <option value="Barclays">Barclays</option>
+                </select>
+
+                <label for="typeOfCard">Type of Card:</label>
+                <select id="typeOfCard" name="TypeOfCard" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="Visa">Visa</option>
+                    <option value="MasterCard">MasterCard</option>
+                </select>
+
+                <!-- Additional hidden fields -->
+                
+                <input type="hidden" id="date" name="Date" value="@DateTime.Now" />
+                <input type="hidden" id="dayOfWeek" name="DayOfWeek" value="@DateTime.Now.DayOfWeek" />
+                <input type="hidden" id="amount" name="Amount" value="@Model.CalculateTotal()" /> <!-- Replace with actual amount value -->
+                <input type="hidden" id="typeOfTransaction" name="TypeOfTransaction" value="Online" />
+
                 <div>
-                    <button>Submit Payment</button>
+                    <button type="submit">Submit Payment</button>
                 </div>
-
             </form>
+
             </br>
             <h2>Total: $@Model.CalculateTotal()</h2>
         </div>
