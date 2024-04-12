@@ -96,70 +96,67 @@
         <!-- Payment Information Section -->
         <div class="payment-section">
             <h2>Payment Information</h2>
-@*             <form method="post" action="@Url.Action("ConfirmedOrder", "Home")">
-                <!-- Mock payment form fields -->
-                <label for="entryMode">Entry Mode:</label>
-                <select id="entryMode" name="entryMode">
-                    <option value="Tap">Tap</option>
-                    <option value="PIN">PIN</option>
-                    <option value="CVC">CVC</option>
-                </select>
-
-                <label for="countryOfTransaction">Country of Transaction:</label>
-                <input type="text" id="countryOfTransaction" name="countryOfTransaction" />
-
-                <label for="shippingAddress">Shipping Address:</label>
-                <input type="text" id="shippingAddress" name="shippingAddress" />
-
-                <label for="bank">Bank:</label>
-                <input type="text" id="bank" name="bank" />
-
-                <label for="typeOfCard">Type of Card:</label>
-                <input type="text" id="typeOfCard" name="typeOfCard" />
-
-                <!-- Additional hidden fields -->
-                <input type="hidden" id="date" name="date" value="@DateTime.Now" />
-                <input type="hidden" id="dayOfWeek" name="dayOfWeek" value="@DateTime.Now.DayOfWeek" />
-                <input type="hidden" id="time" name="time" value="1234" /> <!-- Replace with actual time value -->
-                <input type="hidden" id="amount" name="amount" value="5678" /> <!-- Replace with actual amount value -->
-                <input type="hidden" id="typeOfTransaction" name="typeOfTransaction" value="Online" />
-
-                <div>
-                    <button type="submit">Submit Payment</button>
-                </div>
-            </form> *@
             <form method="post" action="@Url.Action("ReviewOrders", "Home")">
                 <!-- Mock payment form fields -->
                 <label for="entryMode">Entry Mode:</label>
                 <select id="entryMode" name="EntryMode">
-                    <option value="Tap">Tap</option>
+                    <option value="" disabled selected>Select</option>
                     <option value="PIN">PIN</option>
-                    <option value="CVC">CVC</option>
+                    <option value="TAP">TAP</option>
+                    <option value="ATM">ATM</option>
                 </select>
 
                 <label for="countryOfTransaction">Country of Transaction:</label>
-                <input type="text" id="countryOfTransaction" name="CountryOfTransaction" />
+                <select id="countryOfTransaction" name="CountryOfTransaction">
+                    <option value="" disabled selected>Select</option>
+                    <option value="India">India</option>
+                    <option value="Russia">Russia</option>
+                    <option value="USA">USA</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="China">China</option>
+                </select>
 
                 <label for="shippingAddress">Shipping Address:</label>
-                <input type="text" id="shippingAddress" name="ShippingAddress" />
+                <select id="shippingAddress" name="ShippingAddress">
+                    <option value="" disabled selected>Select</option>
+                    <option value="India">India</option>
+                    <option value="Russia">Russia</option>
+                    <option value="USA">USA</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="China">China</option>
+                </select>
 
                 <label for="bank">Bank:</label>
-                <input type="text" id="bank" name="Bank" />
+                <select id="bank" name="Bank">
+                    <option value="" disabled selected>Select</option>
+                    <option value="HSBC">HSBC</option>
+                    <option value="Halifax">Halifax</option>
+                    <option value="Lloyds">Lloyds</option>
+                    <option value="Metro">Metro</option>
+                    <option value="Monzo">Monzo</option>
+                    <option value="RBS">RBS</option>
+                    <option value="Barclays">Barclays</option>
+                </select>
 
                 <label for="typeOfCard">Type of Card:</label>
-                <input type="text" id="typeOfCard" name="TypeOfCard" />
+                <select id="typeOfCard" name="TypeOfCard">
+                    <option value="" disabled selected>Select</option>
+                    <option value="Visa">Visa</option>
+                    <option value="MasterCard">MasterCard</option>
+                </select>
 
                 <!-- Additional hidden fields -->
                 <input type="hidden" id="date" name="Date" value="@DateTime.Now" />
                 <input type="hidden" id="dayOfWeek" name="DayOfWeek" value="@DateTime.Now.DayOfWeek" />
-                <input type="hidden" id="time" name="Time" value="1234" /> <!-- Replace with actual time value -->
-                <input type="hidden" id="amount" name="Amount" value="5678" /> <!-- Replace with actual amount value -->
+@*                 <input type="hidden" id="time" name="Time" value="1234" /> <!-- Replace with actual time value --> *@
+                <input type="hidden" id="amount" name="Amount" value="@Model.CalculateTotal()" /> <!-- Replace with actual amount value -->
                 <input type="hidden" id="typeOfTransaction" name="TypeOfTransaction" value="Online" />
 
                 <div>
                     <button type="submit">Submit Payment</button>
                 </div>
             </form>
+
             </br>
             <h2>Total: $@Model.CalculateTotal()</h2>
         </div>
