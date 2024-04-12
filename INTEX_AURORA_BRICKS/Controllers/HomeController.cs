@@ -422,9 +422,9 @@ namespace INTEX_II.Controllers
                 
             }
 
-            float day = neworder.Date.Day;
-            float month = neworder.Date.Month;
             DateTime now = DateTime.Now;
+            float day = now.Day;
+            float month = now.Month;
             float time = now.Hour;
 
 
