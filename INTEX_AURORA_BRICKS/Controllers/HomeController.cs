@@ -174,6 +174,7 @@ namespace INTEX_II.Controllers
             return BadRequest("Product not found");
         }
 
+        [Authorize(Roles = "Customer")]
         public IActionResult Checkout()
         {
             var cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart(); // Retrieve the cart from session
@@ -322,6 +323,7 @@ namespace INTEX_II.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult CrudProductAdmin()
         {
             List<Products> products = _auroraContext.Products.ToList(); // Fetch all products from the database and materialize into a list

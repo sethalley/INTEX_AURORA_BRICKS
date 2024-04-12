@@ -44,6 +44,7 @@ public class UserAdminController : Controller
         return View(userRolesViewModel);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     
     public IActionResult ListUsers()
@@ -85,6 +86,7 @@ public class UserAdminController : Controller
         return RedirectToAction("UserAdmin");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> EditUser(string id)
     {
@@ -115,7 +117,7 @@ public class UserAdminController : Controller
         return View(model);
     }
 
-    [HttpPost]
+    
     [HttpPost]
     public async Task<IActionResult> EditUser(EditUserViewModel model)
     {

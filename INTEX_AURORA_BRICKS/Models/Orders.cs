@@ -16,7 +16,7 @@ namespace INTEX_AURORA_BRICKS.Models
         public short CustomerId { get; set; }
 
         [Column("date")] // Specify the column name
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
 
 
         [Display(Name = "Day of Week")]
